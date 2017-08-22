@@ -1,0 +1,71 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="stylesheet" href="~/Content/Site.css" />
+    <link rel="stylesheet" href="~/Scripts/jstree/dist/themes/default/style.css" />
+    <link rel="stylesheet" href="~/Content/bootstrap.css" />
+    <link rel="stylesheet" href="~/Content/jquery.splitter.css" />
+    @Scripts.Render("~/Scripts/jquery-1.10.2.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    <script src="~/Scripts/ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="~/Scripts/jstree/dist/jstree.js" type="text/javascript" charset="utf-8"></script>
+    <script src="~/Scripts/jquery.splitter.js"></script>
+</head>
+<body>
+    <div class="navbar-default" id="header">
+        <span style="font-size: 24px; font-family: 'Century Gothic'; margin: 5px;">Il Generator</span>
+        <button class="btn btn-default text-center">
+            Disassemble
+        </button>
+    </div>
+
+    @using (Ajax.BeginForm("ResultCode", null, new AjaxOptions() { OnSuccess = "createTree" }, new
+            {
+                id = "inputForm"
+            }))
+            {
+                <textarea name="sourceCode" style="display: none"></textarea>
+            }
+    <div id="content" style="height:100%;">
+        <div id="editorContainer">
+            <div id="editor" ></div>
+        </div>
+        <div id="tree"></div>
+    </div>
+
+    <script src="~/Scripts/Editor.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        var splitter = $("#content").split({
+            orientation: 'horizontal',
+            limit: 100,
+            onDrag: function (event) {
+                editor.resize();
+            }
+        })
+
+        function createTree(dataObject) {
+            $("#tree").jstree('destroy');
+            $("#tree").jstree(
+                {
+                    'core': {
+                        'data': jsonEncode(dataObject.Tree)
+                    }
+                });
+        }
+    </script>
+
+</body>
+
+
+
+</html>
+
+
+
