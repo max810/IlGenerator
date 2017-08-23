@@ -27,17 +27,19 @@ textarea {
     max-width: 280px;
 }
 
-/* Set code editors' styles*/
-#editor {
+/* Set code editors' styles */
+div.editor {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
 }
-#editorContainer {
+div.editorContainer {
     position: relative;
     overflow: hidden;
-    height: 200px;
+}
+
+#editorContainer {
     width: 100%;
 }

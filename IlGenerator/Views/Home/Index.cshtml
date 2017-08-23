@@ -34,15 +34,20 @@
                 <textarea name="sourceCode" style="display: none"></textarea>
             }
     <div id="content" style="height:100%;">
-        <div id="editorContainer">
-            <div id="editor" ></div>
+        <div id="editorContainer" class="editorContainer">
+            <div id="editor" class="editor"></div>
         </div>
-        <div id="tree"></div>
+        <div id="treeContainer">
+            <div id="tree"></div>
+            <div id="resultEditorContainer" class="editorContainer">
+                <div id="resultEditor" class="editor"></div>
+            </div>
+        </div>
     </div>
 
-    <script src="~/Scripts/Editor.js" type="text/javascript" charset="utf-8"></script>
+    <script src="~/Scripts/Editors.js" type="text/javascript" charset="utf-8"></script>
     <script>
-        var splitter = $("#content").split({
+        var codeSplitter = $("#content").split({
             orientation: 'horizontal',
             limit: 100,
             onDrag: function (event) {
@@ -50,14 +55,40 @@
             }
         })
 
+        var infoSplitter = $("#treeContainer").split({
+            orientation: 'vertical',
+            limit: 100,
+            onDrag: function (event) {
+                console.log('OK');
+            }
+        })
+
         function createTree(dataObject) {
             $("#tree").jstree('destroy');
-            $("#tree").jstree(
+            var tree = $("#tree").jstree(
                 {
+                    'types': {
+                        "demo": {
+                            "icon": "glyphicon glyphicon-flash"
+                        },
+                        "dd": {
+                            "icon" : "glyphicon glyphicon-ok"
+                        }
+                    },
                     'core': {
+                        'multiple': false,
                         'data': jsonEncode(dataObject.Tree)
-                    }
+                    },
+                    'plugins': ["types"]
+
                 });
+            tree.on('changed.jstree', function (e, data) {
+                var curr = data.instance.get_node(data.selected[0]);
+                if (typeof curr.children !== "undefined" && curr.children.length == 0) {
+                    resultEditor.setValue(curr.data);
+                    tree.set_type(curr, "dd");
+                }
+            });
         }
     </script>
 

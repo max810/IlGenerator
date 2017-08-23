@@ -19,15 +19,6 @@ editor.$blockScrolling = Infinity;
 
 editor.session.setOption("useWorker", false);
 
-//function testError() {
-//    editor.getSession().setAnnotations([
-//        {
-//            row: 1,
-//            column: 0,
-//            text: "Strange error",
-//            type: "error"
-//        }]);
-//}
 
 editor.getSession().on("change", function () {
     sourceCode.val(encode(editor.getSession().getValue()));
@@ -38,3 +29,21 @@ $("div.hsplitter").on('mousedown', function (event) {
     alert("dick");
     editor.resize();
 });
+
+var resultEditor = ace.edit("resultEditor");
+editor.setTheme("ace/theme/monokai");
+resultEditor.getSession().setMode("ace/mode/csharp");
+resultEditor.session.setOption("useWorker", false);
+resultEditor.$blockScrolling = Infinity;
+resultEditor.setReadOnly(true);
+
+
+//function testError() {
+//    editor.getSession().setAnnotations([
+//        {
+//            row: 1,
+//            column: 0,
+//            text: "Strange error",
+//            type: "error"
+//        }]);
+//}

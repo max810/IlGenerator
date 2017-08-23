@@ -7,7 +7,7 @@ namespace IlGenerator.Models
 {
     public class CompilationResults
     {
-        object CompiledAssembly;
-        IEnumerable<string> Errors;
+        public object CompiledAssembly;
+        public IEnumerable<string> Errors;
     }
 }

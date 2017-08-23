@@ -2,6 +2,7 @@
 using Mono.Cecil;
 using System;
 using System.CodeDom.Compiler;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -73,7 +74,7 @@ namespace IlGenerator.Models
 
         private static MethodInfo GetMethodInfo(MethodDefinition md)
         {
-            string name = md.FullName;
+            string name = $"{GetAlias(md.ReturnType.ToString())} {md.Name}";
             string sysinfo = GetMethodSystemInfo(md);
             var instructions = md.Body.Instructions;
             StringBuilder body = new StringBuilder(256);
@@ -110,7 +111,7 @@ namespace IlGenerator.Models
 
         private static EventInfo GetEventInfo(EventDefinition ed)
         {
-            string name = $"{ed.EventType} {ed.Name}";
+            string name = $"{GetAlias(ed.EventType.ToString())} {ed.Name}";
             string sysinfo = GetEventSystemInfo(ed);
             string addOn = GetMethodSystemInfo(ed.AddMethod);
             string removeOn = GetMethodSystemInfo(ed.RemoveMethod);
@@ -127,7 +128,7 @@ namespace IlGenerator.Models
 
         private static PropertyInfo GetPropertyInfo(PropertyDefinition pd)
         {
-            string name = $"{pd.PropertyType} {pd.Name}";
+            string name = $"{GetAlias(pd.PropertyType.ToString())} {pd.Name}";
             string sysinfo = GetPropertySystemInfo(pd);
             string getter = GetMethodSystemInfo(pd.GetMethod);
             string setter = GetMethodSystemInfo(pd.SetMethod);
@@ -144,7 +145,7 @@ namespace IlGenerator.Models
 
         private static FieldInfo GetFieldInfo(FieldDefinition fd)
         {
-            string name = $"{fd.FieldType} {fd.Name}";
+            string name = $"{GetAlias(fd.FieldType.ToString())} {fd.Name}";
             string sysinfo = GetFieldSystemInfo(fd);
 
             return new FieldInfo(name, sysinfo);
@@ -215,27 +216,52 @@ namespace IlGenerator.Models
                     new
                     {
                         text = type.Name,
-                        children = new[]
+                        children = new []
                         {
                             new
                             {
                                 text = "Fields",
-                                children = type.Fields.Select(x => new { text = x.Name })
+                                children = type.Fields.Select(x => new
+                                {
+                                    text = x.Name,
+                                    sysinfo = x.SystemInfo,
+                                    data = "",
+                                    type = "demo"
+                                })
                             },
                             new
                             {
                                 text = "Properties",
-                                children = type.Properties.Select(x => new { text = x.Name })
+                                children = type.Properties.Select(x => new
+                                {
+                                    text = x.Name,
+                                    sysinfo = x.SystemInfo,
+                                    data = x.GetterInfo + Environment.NewLine + x.SetterInfo,
+                                    type = "demo"
+
+                                })
                             },
                             new
                             {
                                 text = "Events",
-                                children = type.Events.Select(x => new { text = x.Name })
+                                children = type.Events.Select(x => new
+                                {
+                                    text = x.Name,
+                                    sysinfo = x.SystemInfo,
+                                    data = x.AddOnInfo + Environment.NewLine + x.RemoveOnInfo,
+                                    type = "demo"
+                                })
                             },
                             new
                             {
                                 text = "Methods",
-                                children = type.Methods.Select(x => new { text = x.Name })
+                                children = type.Methods.Select(x => new
+                                {
+                                    text = x.Name,
+                                    sysinfo = x.SystemInfo,
+                                    data = x.MethodBody,
+                                    type = "demo"
+                                })
                             }
                         }
                     })
