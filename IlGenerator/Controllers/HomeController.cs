@@ -31,9 +31,9 @@ namespace IlGenerator.Controllers
 
             var assembly = AssemblyDefinition.ReadAssembly(compiled.PathToAssembly);
 
-            var resultCode = SourceCodeProcessor.GenerateIlCode(assembly);
+            var resultCodeInfo = SourceCodeProcessor.GenerateIlCode(assembly);
 
-            var tree = SourceCodeProcessor.ToTree(resultCode);
+            var tree = SourceCodeProcessor.ToJSTree(resultCodeInfo);
 
             return Json(new
             {

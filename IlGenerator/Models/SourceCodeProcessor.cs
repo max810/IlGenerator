@@ -74,7 +74,11 @@ namespace IlGenerator.Models
 
         private static MethodInfo GetMethodInfo(MethodDefinition md)
         {
-            string name = $"{GetAlias(md.ReturnType.ToString())} {md.Name}";
+            string name = $"{GetTypeAlias(md.ReturnType.ToString())} {md.Name}";
+            if (md.HasGenericParameters)
+            {
+                name += $"<{string.Join(", ", md.GenericParameters)}>";
+            }
             string sysinfo = GetMethodSystemInfo(md);
             var instructions = md.Body.Instructions;
             StringBuilder body = new StringBuilder(256);
@@ -111,7 +115,7 @@ namespace IlGenerator.Models
 
         private static EventInfo GetEventInfo(EventDefinition ed)
         {
-            string name = $"{GetAlias(ed.EventType.ToString())} {ed.Name}";
+            string name = $"{GetTypeAlias(ed.EventType.ToString())} {ed.Name}";
             string sysinfo = GetEventSystemInfo(ed);
             string addOn = GetMethodSystemInfo(ed.AddMethod);
             string removeOn = GetMethodSystemInfo(ed.RemoveMethod);
@@ -128,7 +132,7 @@ namespace IlGenerator.Models
 
         private static PropertyInfo GetPropertyInfo(PropertyDefinition pd)
         {
-            string name = $"{GetAlias(pd.PropertyType.ToString())} {pd.Name}";
+            string name = $"{GetTypeAlias(pd.PropertyType.ToString())} {pd.Name}";
             string sysinfo = GetPropertySystemInfo(pd);
             string getter = GetMethodSystemInfo(pd.GetMethod);
             string setter = GetMethodSystemInfo(pd.SetMethod);
@@ -145,7 +149,7 @@ namespace IlGenerator.Models
 
         private static FieldInfo GetFieldInfo(FieldDefinition fd)
         {
-            string name = $"{GetAlias(fd.FieldType.ToString())} {fd.Name}";
+            string name = $"{GetTypeAlias(fd.FieldType.ToString())} {fd.Name}";
             string sysinfo = GetFieldSystemInfo(fd);
 
             return new FieldInfo(name, sysinfo);
@@ -180,7 +184,7 @@ namespace IlGenerator.Models
                 "public";
         }
 
-        private static string GetAlias(string type)
+        private static string GetTypeAlias(string type)
         {
             if (Regex.IsMatch(type, @"^System.U?Int\d{2}(\[\])?$")
                 || Regex.IsMatch(type, @"^System.Object(\[\])?$")
@@ -206,12 +210,11 @@ namespace IlGenerator.Models
             }
         }
 
-        public static object ToTree(IEnumerable<TypeInfo> types)
+        public static object ToJSTree(IEnumerable<TypeInfo> types)
         {
-            var asm = new
+            var tree = new
             {
                 text = "Assembly",
-                state = "opened",
                 children = types.Select(type =>
                     new
                     {
@@ -221,54 +224,65 @@ namespace IlGenerator.Models
                             new
                             {
                                 text = "Fields",
-                                children = type.Fields.Select(x => new
-                                {
-                                    text = x.Name,
-                                    sysinfo = x.SystemInfo,
-                                    data = "",
-                                    type = "demo"
-                                })
+                                children = type.Fields.Select( x => 
+                                new JSTreeLeaf(
+                                    x.Name,
+                                    x.SystemInfo,
+                                    "",
+                                    ResolveType(x)))
                             },
                             new
                             {
                                 text = "Properties",
-                                children = type.Properties.Select(x => new
-                                {
-                                    text = x.Name,
-                                    sysinfo = x.SystemInfo,
-                                    data = x.GetterInfo + Environment.NewLine + x.SetterInfo,
-                                    type = "demo"
-
-                                })
+                                children = type.Properties.Select( x => 
+                                new JSTreeLeaf(
+                                    x.Name,
+                                    x.SystemInfo,
+                                    x.GetterInfo + Environment.NewLine + x.SetterInfo,
+                                    ResolveType(x)))
                             },
                             new
                             {
                                 text = "Events",
-                                children = type.Events.Select(x => new
-                                {
-                                    text = x.Name,
-                                    sysinfo = x.SystemInfo,
-                                    data = x.AddOnInfo + Environment.NewLine + x.RemoveOnInfo,
-                                    type = "demo"
-                                })
+                                children = type.Events.Select( x => 
+                                new JSTreeLeaf(
+                                    x.Name,
+                                    x.SystemInfo,
+                                    x.AddOnInfo + Environment.NewLine + x.RemoveOnInfo,
+                                    ResolveType(x)))
                             },
                             new
                             {
                                 text = "Methods",
-                                children = type.Methods.Select(x => new
-                                {
-                                    text = x.Name,
-                                    sysinfo = x.SystemInfo,
-                                    data = x.MethodBody,
-                                    type = "demo"
-                                })
+                                children = type.Methods.Select( x => 
+                                new JSTreeLeaf(
+                                    x.Name,
+                                    x.SystemInfo,
+                                    x.MethodBody,
+                                    ResolveType(x)))
                             }
                         }
                     })
             };
 
-
-            return asm;
+            return tree;
+        }
+        private static IlTypes ResolveType(FieldInfo field)
+        {
+            return field.SystemInfo.Contains(" static ") ? IlTypes.FieldStatic : IlTypes.FieldInstance;
+        }
+        private static IlTypes ResolveType(PropertyInfo prop)
+        {
+            return IlTypes.Property;
+        }
+        private static IlTypes ResolveType(EventInfo @event)
+        {
+            return IlTypes.Event;
+        }
+        private static IlTypes ResolveType(MethodInfo method)
+        {
+            return (method.SystemInfo.Contains(" static ") ? IlTypes.MethodStatic : IlTypes.MethodInstance)
+                | (Regex.IsMatch(method.Name, @"\w+<\s*\w+\s*>") ? IlTypes.MethodGeneric : IlTypes.None);
         }
     }
 }

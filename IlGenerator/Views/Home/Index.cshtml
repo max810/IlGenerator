@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 
 <html>
-<head>
+<head> 
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
     <link rel="stylesheet" href="~/Content/Site.css" />
@@ -25,7 +25,6 @@
             Disassemble
         </button>
     </div>
-
     @using (Ajax.BeginForm("ResultCode", null, new AjaxOptions() { OnSuccess = "createTree" }, new
             {
                 id = "inputForm"
@@ -52,6 +51,7 @@
             limit: 100,
             onDrag: function (event) {
                 editor.resize();
+                resultEditor.resize();
             }
         })
 
@@ -59,7 +59,7 @@
             orientation: 'vertical',
             limit: 100,
             onDrag: function (event) {
-                console.log('OK');
+                resultEditor.resize();
             }
         })
 
@@ -68,11 +68,50 @@
             var tree = $("#tree").jstree(
                 {
                     'types': {
-                        "demo": {
-                            "icon": "glyphicon glyphicon-flash"
+                        "field-instance": {
+                            "icon": "/Content/IlIcons/field-instance.png"
                         },
-                        "dd": {
-                            "icon" : "glyphicon glyphicon-ok"
+                        "field-static": {
+                            "icon": "/Content/IlIcons/field-static.png"
+                        },
+                        "property": {
+                            "icon": "/Content/IlIcons/property.png"
+                        },
+                        "method-instance": {
+                            "icon": "/Content/IlIcons/method-instance.png"
+                        },
+                        "method-instance-generic": {
+                            "icon": "/Content/IlIcons/method-instance-generic.png"
+                        },
+                        "method-static": {
+                            "icon": "/Content/IlIcons/method-static.png"
+                        },
+                        "method-static-generic": {
+                            "icon": "/Content/IlIcons/method-static-generic.png"
+                        },
+                        "interface": {
+                            "icon": "/Content/IlIcons/interface.png"
+                        },
+                        "interface-generic": {
+                            "icon": "/Content/IlIcons/interface-generic.png"
+                        },
+                        "event": {
+                            "icon": "/Content/IlIcons/event.png"
+                        },
+                        "class": {
+                            "icon": "/Content/IlIcons/class.png"
+                        },
+                        "class-generic": {
+                            "icon": "/Content/IlIcons/class-generic.png"
+                        },
+                        "struct": {
+                            "icon": "/Content/IlIcons/struct.png"
+                        },
+                        "struct-generic": {
+                            "icon": "/Content/IlIcons/struct-generic.png"
+                        },
+                        "enum": {
+                            "icon": "/Content/IlIcons/enum.png"
                         }
                     },
                     'core': {
@@ -83,12 +122,13 @@
 
                 });
             tree.on('changed.jstree', function (e, data) {
-                var curr = data.instance.get_node(data.selected[0]);
+                var curr = data.node;
                 if (typeof curr.children !== "undefined" && curr.children.length == 0) {
-                    resultEditor.setValue(curr.data);
-                    tree.set_type(curr, "dd");
+                    resultEditor.setValue(decode(curr.data));
+                    data.instance.set_type(curr, "dd");
                 }
             });
+            resultEditor.setValue("");
         }
     </script>
 

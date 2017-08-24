@@ -1,8 +1,15 @@
-﻿function encode(string) {
-    var encoded = string.replace(/[\u00A0-\u9999<>\&]/gim, function (i) {
+﻿function encode(text) {
+    var encoded = text.replace(/[\u00A0-\u9999<>\&]/gim, function (i) {
         return '&#' + i.charCodeAt(0) + ';';
     });
     return encoded;
+}
+
+function decode(text) {
+    //inserting text into a div, forcing jquery to decode it, 
+    //and then pulling the new text back
+    var decoded = $('<div/>').html(text).text();
+    return decoded;
 }
 
 function jsonEncode(jsonObject) {

@@ -170,6 +170,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Models\CompilationResults.cs" />
+    <Compile Include="Models\IlTypes.cs" />
+    <Compile Include="Models\JSTreeLeaf.cs" />
     <Compile Include="Models\TypeInfo.cs" />
     <Compile Include="Models\CodeInfo.cs" />
     <Compile Include="Models\EventInfo.cs" />
@@ -190,6 +192,21 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\IlIcons\class-generic.png" />
+    <Content Include="Content\IlIcons\class.png" />
+    <Content Include="Content\IlIcons\enum.png" />
+    <Content Include="Content\IlIcons\event.png" />
+    <Content Include="Content\IlIcons\field-instance.png" />
+    <Content Include="Content\IlIcons\field-static.png" />
+    <Content Include="Content\IlIcons\interface-generic.png" />
+    <Content Include="Content\IlIcons\interface.png" />
+    <Content Include="Content\IlIcons\method-instance-generic.png" />
+    <Content Include="Content\IlIcons\method-instance.png" />
+    <Content Include="Content\IlIcons\method-static-generic.png" />
+    <Content Include="Content\IlIcons\method-static.png" />
+    <Content Include="Content\IlIcons\property.png" />
+    <Content Include="Content\IlIcons\struct-generic.png" />
+    <Content Include="Content\IlIcons\struct.png" />
     <Content Include="Content\jquery.splitter.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
