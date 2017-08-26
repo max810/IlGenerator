@@ -5,11 +5,11 @@ using System.Web;
 
 namespace IlGenerator.Models
 {
-    public class EventInfo : CodeInfo
+    public class EventInfo : CodeInfoBase
     {
         public string AddOnInfo { get; set; }
         public string RemoveOnInfo { get; set; }
-        public EventInfo(string name, string sysInfo, string addOn, string removeOn) : base(name, sysInfo)
+        public EventInfo(string name, string sysInfo, string attrs, string addOn, string removeOn) : base(name, sysInfo, attrs)
         {
             if(string.IsNullOrWhiteSpace(addOn) || string.IsNullOrWhiteSpace(removeOn))
             {

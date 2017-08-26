@@ -5,9 +5,9 @@ using System.Web;
 
 namespace IlGenerator.Models
 {
-    public class FieldInfo : CodeInfo
+    public class FieldInfo : CodeInfoBase
     {
-        public FieldInfo(string name, string sysInfo) : base(name, sysInfo)
+        public FieldInfo(string name, string sysInfo, string attrs) : base(name, sysInfo, attrs)
         {
         }
     }

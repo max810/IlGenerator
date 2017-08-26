@@ -5,15 +5,16 @@ using System.Web;
 
 namespace IlGenerator.Models
 {
-    public abstract class CodeInfo
+    public abstract class CodeInfoBase
     {
         public string Name { get; set; }
         public string SystemInfo { get; set; }
-        public string Attributes { get; set; }
-        public CodeInfo(string name, string sysInfo)
+        public string CustomAttributes { get; set; }
+        public CodeInfoBase(string name, string sysInfo, string attrs)
         {
             Name = name;
             SystemInfo = sysInfo;
+            CustomAttributes = attrs;
         }
     }
 }

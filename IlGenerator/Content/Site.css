@@ -42,4 +42,10 @@ div.editorContainer {
 
 #editorContainer {
     width: 100%;
+    color: green;
+}
+
+#tree{
+    font-family: monospace;
+    font-size: 12px;
 }

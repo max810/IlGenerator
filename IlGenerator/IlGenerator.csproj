@@ -170,10 +170,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Models\CompilationResults.cs" />
+    <Compile Include="Models\ErrorInfo.cs" />
     <Compile Include="Models\IlTypes.cs" />
-    <Compile Include="Models\JSTreeLeaf.cs" />
+    <Compile Include="Models\JSTreeNode.cs" />
     <Compile Include="Models\TypeInfo.cs" />
-    <Compile Include="Models\CodeInfo.cs" />
+    <Compile Include="Models\CodeInfoBase.cs" />
     <Compile Include="Models\EventInfo.cs" />
     <Compile Include="Models\FieldInfo.cs" />
     <Compile Include="Models\MethodInfo.cs" />
@@ -198,6 +199,10 @@
     <Content Include="Content\IlIcons\event.png" />
     <Content Include="Content\IlIcons\field-instance.png" />
     <Content Include="Content\IlIcons\field-static.png" />
+    <Content Include="Content\IlIcons\folder-event.png" />
+    <Content Include="Content\IlIcons\folder-field.png" />
+    <Content Include="Content\IlIcons\folder-method.png" />
+    <Content Include="Content\IlIcons\folder-property.png" />
     <Content Include="Content\IlIcons\interface-generic.png" />
     <Content Include="Content\IlIcons\interface.png" />
     <Content Include="Content\IlIcons\method-instance-generic.png" />

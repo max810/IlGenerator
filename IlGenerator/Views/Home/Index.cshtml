@@ -5,13 +5,13 @@
 <!DOCTYPE html>
 
 <html>
-<head> 
+<head>
     <meta name="viewport" content="width=device-width" />
     <title>Index</title>
-    <link rel="stylesheet" href="~/Content/Site.css" />
     <link rel="stylesheet" href="~/Scripts/jstree/dist/themes/default/style.css" />
     <link rel="stylesheet" href="~/Content/bootstrap.css" />
     <link rel="stylesheet" href="~/Content/jquery.splitter.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
     @Scripts.Render("~/Scripts/jquery-1.10.2.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
     <script src="~/Scripts/ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -21,17 +21,18 @@
 <body>
     <div class="navbar-default" id="header">
         <span style="font-size: 24px; font-family: 'Century Gothic'; margin: 5px;">Il Generator</span>
-        <button class="btn btn-default text-center">
+        <button class="btn btn-default text-center" onclick="alert('TO DO =)');">
             Disassemble
         </button>
     </div>
-    @using (Ajax.BeginForm("ResultCode", null, new AjaxOptions() { OnSuccess = "createTree" }, new
+    @using (Ajax.BeginForm("ResultCode", null, new AjaxOptions() { OnSuccess = "updateTree" }, 
+        new
             {
                 id = "inputForm"
             }))
-            {
-                <textarea name="sourceCode" style="display: none"></textarea>
-            }
+    {
+        <textarea name="sourceCode" style="display: none"></textarea>
+    }
     <div id="content" style="height:100%;">
         <div id="editorContainer" class="editorContainer">
             <div id="editor" class="editor"></div>
@@ -62,6 +63,29 @@
                 resultEditor.resize();
             }
         })
+
+        function updateTree(dataObject) {
+            var warnings = dataObject.Warnings;
+            var errors = dataObject.Errors;
+            editor.getSession().setAnnotations(warnings.map(x => toAnnotation(x, "warning")));
+            if (errors.length != 0) {
+                $("#tree").html(errors.map(x => x.TextMessage).join("<br>"));
+                editor.getSession().setAnnotations(errors.map(x => toAnnotation(x, "error")));
+                resultEditor.setValue("");
+            }
+            else {
+                createTree(dataObject);
+            }
+        }
+
+        function toAnnotation(errorInfo, type) {
+            return ({
+                row: errorInfo.Row - 1,
+                column: errorInfo.Column,
+                text: errorInfo.HighlightMessage,
+                type: type
+            });
+        }
 
         function createTree(dataObject) {
             $("#tree").jstree('destroy');
@@ -112,6 +136,18 @@
                         },
                         "enum": {
                             "icon": "/Content/IlIcons/enum.png"
+                        },
+                        "folder-field": {
+                            "icon": "/Content/IlIcons/folder-field.png"
+                        },
+                        "folder-property": {
+                            "icon": "/Content/IlIcons/folder-property.png"
+                        },
+                        "folder-event": {
+                            "icon": "/Content/IlIcons/folder-event.png"
+                        },
+                        "folder-method": {
+                            "icon": "/Content/IlIcons/folder-method.png"
                         }
                     },
                     'core': {
@@ -123,20 +159,11 @@
                 });
             tree.on('changed.jstree', function (e, data) {
                 var curr = data.node;
-                if (typeof curr.children !== "undefined" && curr.children.length == 0) {
-                    resultEditor.setValue(decode(curr.data));
-                    data.instance.set_type(curr, "dd");
-                }
+                resultEditor.setValue(decode(curr.data));
+                resultEditor.session.selection.clearSelection();
             });
             resultEditor.setValue("");
         }
     </script>
-
 </body>
-
-
-
 </html>
-
-
-

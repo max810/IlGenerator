@@ -35,10 +35,13 @@ namespace IlGenerator.Controllers
 
             var tree = SourceCodeProcessor.ToJSTree(resultCodeInfo);
 
+            var allErrors = compiled.Errors.Cast<CompilerError>().Select(x => new ErrorInfo(x));
+
             return Json(new
             {
                 Tree = tree,
-                Errors = compiled.Errors
+                Errors = allErrors.Where(x => !x.IsWarning),
+                Warnings = allErrors.Where(x => x.IsWarning)
             });
         }
     }

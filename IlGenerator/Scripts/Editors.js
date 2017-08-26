@@ -18,6 +18,10 @@ function jsonEncode(jsonObject) {
     return JSON.parse(newstr);
 }
 
+function getErrors() {
+
+}
+
 var editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.getSession().setMode("ace/mode/csharp");
@@ -39,7 +43,7 @@ $("div.hsplitter").on('mousedown', function (event) {
 
 var resultEditor = ace.edit("resultEditor");
 editor.setTheme("ace/theme/monokai");
-resultEditor.getSession().setMode("ace/mode/csharp");
+resultEditor.getSession().setMode("ace/mode/csharp-il");
 resultEditor.session.setOption("useWorker", false);
 resultEditor.$blockScrolling = Infinity;
 resultEditor.setReadOnly(true);

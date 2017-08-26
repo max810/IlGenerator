@@ -5,10 +5,10 @@ using System.Web;
 
 namespace IlGenerator.Models
 {
-    public class MethodInfo : CodeInfo
+    public class MethodInfo : CodeInfoBase
     {
         public string MethodBody { get; set; }
-        public MethodInfo(string name, string sysInfo, string methodBody) : base(name, sysInfo)
+        public MethodInfo(string name, string sysInfo, string attrs, string methodBody) : base(name, sysInfo, attrs)
         {
             MethodBody = methodBody;
         }
