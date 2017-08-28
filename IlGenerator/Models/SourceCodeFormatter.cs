@@ -91,13 +91,14 @@ namespace IlGenerator.Models
 
             string withHandlers = InsertExceptionHandlers(body.ToString(), md.Body.ExceptionHandlers);
 
-            //------------Additional info------------
+            //----Additional info----
 
             string fullBodyCode = $".maxstack {md.Body.MaxStackSize}{Environment.NewLine}{withHandlers}";
             if (md.Body.HasVariables)
             {
                 fullBodyCode = $".locals init ({string.Join(", ", md.Body.Variables.Select(x => $"[{x.Index}] {GetTypeAlias(x.VariableType)}{(string.IsNullOrWhiteSpace(x.Name) ? "" : " " + x.Name)}"))}){Environment.NewLine}" + fullBodyCode;
             }
+            fullBodyCode = $"// Code size (0x{string.Format("{0:X}", md.Body.CodeSize)}){Environment.NewLine}" + fullBodyCode;
             return new MethodInfo(name, sysinfo, GetCustomAttributes(md), fullBodyCode);
         }
 
@@ -251,7 +252,7 @@ namespace IlGenerator.Models
             lines.InsertRange(tryStart, WrapWithHandler(innnerCode, ".try"));
         }
 
-        private static List<string> WrapWithHandler(List<string> innerCode, string handlerName, string startComment = "")
+        private static List<string> WrapWithHandler(List<string> innerCode, string handlerName)
         {
             int offsetNumber = innerCode.First().Length - innerCode.First().TrimStart().Length;
             innerCode = innerCode.Select(x => "\t" + x).ToList();
@@ -287,7 +288,7 @@ namespace IlGenerator.Models
                 + " " + GetTypeAlias(attr.AttributeType)
                 + "::" + ctor.Name
                 + $"({string.Join(", ", ctor.Parameters.Select(x => GetTypeAlias(x.ParameterType)))})"
-                + $" = ( {string.Join(" ", attr.GetBlob())} )";
+                + $" = ( {string.Join(" ", attr.GetBlob().Select(x => string.Format("{0:X2}", x)))} )";
             return info;
         }
 
@@ -371,16 +372,6 @@ namespace IlGenerator.Models
         {
             return (method.SystemInfo.Contains(" static ") ? IlTypes.MethodStatic : IlTypes.MethodInstance)
                 | (Regex.IsMatch(method.Name, @"\w+<\s*\w+\s*>") ? IlTypes.MethodGeneric : IlTypes.None);
-        }
-
-        private static string AddOffset(IEnumerable<string> lines)
-        {
-            return string.Join(Environment.NewLine, lines.Select(x => "\t" + x));
-        }
-
-        private static string AddOffset(string text)
-        {
-            return string.Join(Environment.NewLine, text.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Select(x => "\t" + x));
         }
 
         #endregion
