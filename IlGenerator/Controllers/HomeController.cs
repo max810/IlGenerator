@@ -27,13 +27,13 @@ namespace IlGenerator.Controllers
         {
             string sourceCodeDecoded = WebUtility.HtmlDecode(sourceCode);
 
-            CompilerResults compiled = SourceCodeProcessor.CompileDefaultAssembly(sourceCodeDecoded);
+            CompilerResults compiled = SourceCodeGenerator.CompileDefaultAssembly(sourceCodeDecoded);
 
             var assembly = AssemblyDefinition.ReadAssembly(compiled.PathToAssembly);
 
-            var resultCodeInfo = SourceCodeProcessor.GenerateIlCode(assembly);
+            var resultCodeInfo = SourceCodeGenerator.GenerateIlCode(assembly);
 
-            var tree = SourceCodeProcessor.ToJSTree(resultCodeInfo);
+            var tree = JsTreeFormatter.ToJSTree(resultCodeInfo);
 
             var allErrors = compiled.Errors.Cast<CompilerError>().Select(x => new ErrorInfo(x));
 
