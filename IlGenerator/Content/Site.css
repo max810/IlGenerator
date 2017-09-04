@@ -1,11 +1,11 @@
 ﻿body {
     padding-top: 0;
-    padding-bottom: 20px;
     height: 100%;
+    padding-bottom: 42px;
 }
-html{
-    height:100%;
-    padding-bottom: 20px;
+
+html {
+    height: 100%;
 }
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -27,25 +27,185 @@ textarea {
     max-width: 280px;
 }
 
+#header {
+    min-height: 38px;
+    vertical-align: middle;
+}
+
+#content {
+    background-color: #202020;
+    height: 100%;
+}
+
 /* Set code editors' styles */
 div.editor {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    width: auto;
+    height: 100%;
+    min-height: 40px;
+    /*overflow: hidden;*/
 }
+
 div.editorContainer {
     position: relative;
-    overflow: hidden;
 }
 
 #editorContainer {
-    width: 100%;
-    color: green;
+    min-height: 45%;
+    max-height: 55%;
+    height: 50%;
+    overflow: hidden;
 }
 
-#tree{
+div.editorNavbar {
+    width: 45px;
+    background-color: #272822;
+    float: left;
+    height: 100%;
+    min-height: 200px;
+    overflow: visible;
+}
+
+#resultEditorContainer {
+    overflow: hidden;
+}
+
+#resultEditorNavbar {
+    background-color: #DCDCDC;
+}
+
+#resultInfoContainer {
+    background-color: white;
+}
+
+#tree {
     font-family: monospace;
     font-size: 12px;
+    min-width: 45%;
+    max-width: 55%;
+    width: 50%;
 }
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+button.editorButton {
+    display: block;
+    height: 40px;
+    width: inherit;
+    margin: 0 auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: transparent;
+    border: 1px double transparent;
+}
+
+.tp-r {
+    opacity: 0.6;
+}
+
+    .tp-r:hover {
+        opacity: 1.0;
+    }
+
+button.editorButton :hover {
+    opacity: 0.9;
+}
+
+button:focus {
+    outline: none;
+}
+
+button.topNavbarButton {
+    padding: 0;
+    height: 30px;
+    background-color: transparent;
+    margin-left: 5px;
+    width: 30px;
+    opacity: 0.55;
+    margin-bottom: 5px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+button.topNavbarButton:hover{
+    opacity: 0.8;
+}
+
+#fontLarger {
+    background-image: url(/Content/Icons/font-larger.png);
+}
+
+#fontSmaller {
+    background-image: url(/Content/Icons/font-smaller.png);
+}
+
+.tooltip.in {
+    opacity: 0.75;
+}
+
+.tooltip > .tooltip-inner {
+    background-color: white;
+    color: black;
+    border: 1px solid #2F3129;
+    width: 70px;
+}
+
+.tp-dark + .tooltip > .tooltip-inner {
+    background-color: black;
+    color: white;
+    border: 1px solid #EAEAEA;
+}
+
+.tooltip.right > .tooltip-arrow {
+    border-right-color: white;
+}
+
+.tp-dark + .tooltip.right > .tooltip-arrow {
+    border-right-color: black;
+}
+
+#fontSizeInput {
+    width: 40px;
+    height: 30px;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+#editorSelectAllButton {
+    background-image: url(/Content/Icons/select-all.png);
+}
+
+#editorClearAllButton {
+    background-image: url(/Content/Icons/clear-all.png);
+}
+
+#editorCopyAllButton {
+    background-image: url(/Content/Icons/copy-all.png);
+}
+
+#editorUndoButton {
+    background-image: url(/Content/Icons/undo.png);
+}
+
+#editorRedoButton {
+    background-image: url(/Content/Icons/redo.png);
+}
+
+
+
+#resultEditorSelectAllButton {
+    background-image: url(/Content/Icons/select-all-dark.png);
+}
+
+#resultEditorClearAllButton {
+    background-image: url(/Content/Icons/clear-all-dark.png);
+}
+
+#resultEditorCopyAllButton {
+    background-image: url(/Content/Icons/copy-all-dark.png);
+}
+

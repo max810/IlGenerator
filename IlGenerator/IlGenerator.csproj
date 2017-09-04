@@ -205,6 +205,23 @@
     <Content Include="Content\IlIcons\folder-field.png" />
     <Content Include="Content\IlIcons\folder-method.png" />
     <Content Include="Content\IlIcons\folder-property.png" />
+    <Content Include="Content\Icons\clear-all - Copy.png" />
+    <Content Include="Content\Icons\clear-all-dark.png" />
+    <Content Include="Content\Icons\clear-all.png" />
+    <Content Include="Content\Icons\copy-all - Copy.png" />
+    <Content Include="Content\Icons\copy-all-dark.png" />
+    <Content Include="Content\Icons\copy-all.png" />
+    <Content Include="Content\Icons\font-larger.png" />
+    <Content Include="Content\Icons\font-smaller.png" />
+    <Content Include="Content\Icons\redo - Copy.png" />
+    <Content Include="Content\Icons\redo-dark.png" />
+    <Content Include="Content\Icons\redo.png" />
+    <Content Include="Content\Icons\select-all - Copy.png" />
+    <Content Include="Content\Icons\select-all-dark.png" />
+    <Content Include="Content\Icons\select-all.png" />
+    <Content Include="Content\Icons\undo - Copy.png" />
+    <Content Include="Content\Icons\undo-dark.png" />
+    <Content Include="Content\Icons\undo.png" />
     <Content Include="Content\IlIcons\interface-generic.png" />
     <Content Include="Content\IlIcons\interface.png" />
     <Content Include="Content\IlIcons\method-instance-generic.png" />
@@ -947,10 +964,16 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\clipboard\clipboard.js" />
+    <Content Include="Scripts\clipboard\clipboard.min.js" />
     <Content Include="Scripts\Editors.js" />
+    <Content Include="Scripts\EventHandlers.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\scrollbar\jquery.scrollbar.css" />
+    <Content Include="Scripts\scrollbar\jquery.scrollbar.js" />
+    <Content Include="Scripts\scrollbar\jquery.scrollbar.min.js" />
     <Content Include="Scripts\jquery.splitter.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />

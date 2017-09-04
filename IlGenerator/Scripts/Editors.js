@@ -24,13 +24,13 @@ function jsonEncode(jsonObject) {
 var editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.getSession().setMode("ace/mode/csharp");
-var sourceCode = $('textarea[name="sourceCode"]');
 editor.$blockScrolling = Infinity;
 
 editor.session.setOption("useWorker", false);
 
 editor.getSession().on("change", function () {
-    sourceCode.val(encode(editor.getSession().getValue()));
+    $('textarea[name="sourceCode"]').val(encode(editor.getSession().getValue()));
+    $('#editorCopyButton').attr('data-clipboard-text', editor.getSession().getValue());
     $("#inputForm").submit();
 });
 

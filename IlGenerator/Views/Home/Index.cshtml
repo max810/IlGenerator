@@ -12,31 +12,50 @@
     <link rel="stylesheet" href="~/Content/bootstrap.css" />
     <link rel="stylesheet" href="~/Content/jquery.splitter.css" />
     <link rel="stylesheet" href="~/Content/Site.css" />
+    <link rel="stylesheet" href="~/Scripts/scrollbar/jquery.scrollbar.css" />
     @Scripts.Render("~/Scripts/jquery-1.10.2.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
 </head>
 <body>
     <div class="navbar-default" id="header">
-        <span style="font-size: 24px; font-family: 'Century Gothic'; margin: 5px;">Il Generator</span>
-        <button class="btn btn-default text-center" onclick="alert('TO DO =)');">
-            Disassemble
+        <a href="" style="text-decoration: none"><span style="font-size: 24px; font-family: 'Century Gothic'; margin: 5px;">Il Generator</span></a>
+        <button class="btn btn-default text-center" style="height: 30px; margin-bottom: 4px;" onclick="$('#inputForm').submit();">
+            <span style="vertical-align: top">Disassemble</span>
         </button>
+        <button class="btn topNavbarButton" id="fontLarger" onclick="changeFont(2)">
+        </button>
+        <button class="btn topNavbarButton" id="fontSmaller" onclick="changeFont(-2)">
+        </button>
+        <input type="number" min="1" max="48" value="12" id="fontSizeInput"/>
     </div>
-    @using (Ajax.BeginForm("ResultCode", null, new AjaxOptions() { OnSuccess = "updateTree" }, 
+    <textarea id="IlCode" style="display:none"></textarea>
+    @using (Ajax.BeginForm("ResultCode", null, new AjaxOptions() { OnSuccess = "updateTree" },
         new
-            {
-                id = "inputForm"
-            }))
+        {
+            id = "inputForm"
+        }))
     {
-        <textarea name="sourceCode" style="display: none"></textarea>
+        <textarea name="sourceCode" id="sourceCode" style="display: none"></textarea>
     }
-    <div id="content" style="height:100%;">
+    <div id="content">
         <div id="editorContainer" class="editorContainer">
-            <div id="editor" class="editor"></div>
+            <div class="btn-group-vertical editorNavbar">
+                <button class="editorButton tp-r" data-toggle="tooltip" title="Select all" id="editorSelectAllButton" onclick="editor.selectAll(); editor.focus()"></button>
+                <button class="editorButton tp-r" data-toggle="tooltip" title="Copy all" id="editorCopyAllButton" data-clipboard-target="#sourceCode"></button>
+                <button class="editorButton tp-r" data-toggle="tooltip" title="Clear all" id="editorClearAllButton" onclick="editor.setValue('');"></button>
+                <button class="editorButton tp-r" data-toggle="tooltip" title="Undo" id="editorUndoButton" onclick="editor.undo()"></button>
+                <button class="editorButton tp-r" data-toggle="tooltip" title="Redo" id="editorRedoButton" onclick="editor.redo()"></button>
+            </div>
+            <div id="editor" class="editor scrollbar-inner"></div>
         </div>
-        <div id="treeContainer">
-            <div id="tree"></div>
+        <div id="resultInfoContainer">
+            <div id="tree" class="scrollbar-outer"></div>
             <div id="resultEditorContainer" class="editorContainer">
+                <div id="resultEditorNavbar" class="btn-group-vertical editorNavbar">
+                    <button class="editorButton btn-dark tp-r tp-dark" title="Select all" id="resultEditorSelectAllButton" onclick="resultEditor.selectAll(); resultEditor.focus()"></button>
+                    <button class="editorButton btn-dark tp-r tp-dark" title="Copy all" id="resultEditorCopyAllButton" data-clipboard-target="#IlCode"></button>
+                    <button class="editorButton btn-dark tp-r tp-dark" title="Clear all" id="resultEditorClearAllButton" onclick="resultEditor.setValue('');"></button>
+                </div>
                 <div id="resultEditor" class="editor"></div>
             </div>
         </div>
@@ -48,5 +67,46 @@
     <script src="~/Scripts/Editors.js" type="text/javascript" charset="utf-8"></script>
     <script src="~/Scripts/Splitters.js" type="text/javascript" charset="utf-8"></script>
     <script src="~/Scripts/Tree.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
+    <script type="text/javascript" src="~/Scripts/clipboard/clipboard.js"></script>
+    <script type="text/javascript" src="~/Scripts/EventHandlers.js" charset="utf-8"></script>
+    <script type="text/javascript" src="~/Scripts/scrollbar/jquery.scrollbar.js" charset="utf-8"></script>
+    <script>
+        var font = 12;
+        $(document).css('font-size', '12px');
+        $('#content').height('100%');
+        $('#editorContainer').css('height', '50%');
+        $('#tree').css('width', '50%');
+        $('.topNavbarButton').mouseup(function () {
+            $(this).blur();
+        });
+        function changeFont(mod) {
+            font += mod;
+            $('#editor').css('font-size', font + 'px');
+            $('#tree').css('font-size', font + 'px');
+            $('#resultEditor').css('font-size', font + 'px');
+            $('#fontSizeInput').val(font);
+        }
+        $('#fontSizeInput').change(function () {
+            var newVal = $('#fontSizeInput').val();
+            if (newVal >= 2 && newVal <= 48)
+                changeFont($('#fontSizeInput').val() - font);
+            else {
+                $('#fontSizeInput').val(font);
+            }
+        });
+        $('#fontSizeInput').keydown(function (e) {
+            if (e.key == 'Enter') {
+                $(this).blur();
+            }
+        });
+        $('.ace_scrollbar-h, ace_scrollbar-v').resize(function () {
+            $('.ace_scrollbar-v').css('width', '24px');
+            $('.ace_scrollbar-v').css('height', '24px');
+            $('.ace_scroller').css('right', 0);
+            $('.ace_scroller').css('bottom', 0);
+            
+        });
+    </script>
 </body>
 </html>
