@@ -38,11 +38,20 @@ textarea {
 }
 
 /* Set code editors' styles */
-div.editor {
+div.CodeMirror {
     width: auto;
     height: 100%;
     min-height: 40px;
-    /*overflow: hidden;*/
+    overflow: hidden;
+}
+
+div.CodeMirror-scroll {
+    height: 100%;
+    overflow-y: auto;
+}
+
+div.CodeMirror-gutter{
+    height:100%;
 }
 
 div.editorContainer {
@@ -131,9 +140,9 @@ button.topNavbarButton {
     background-size: contain;
 }
 
-button.topNavbarButton:hover{
-    opacity: 0.8;
-}
+    button.topNavbarButton:hover {
+        opacity: 0.8;
+    }
 
 #fontLarger {
     background-image: url(/Content/Icons/font-larger.png);
@@ -208,4 +217,3 @@ button.topNavbarButton:hover{
 #resultEditorCopyAllButton {
     background-image: url(/Content/Icons/copy-all-dark.png);
 }
-

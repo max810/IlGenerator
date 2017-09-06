@@ -1,20 +1,20 @@
 ﻿var codeSplitter = $("#content").height('100%').split({
     orientation: 'horizontal',
-    limit: 150,
+    limit: 50,
     position: '50%',
     onDrag: function (event) {
         var parentHeight = $('#content').height();
         if (parentHeight > 150) {
             var newHeight = $('#editorContainer').height();
             var percent = newHeight / parentHeight * 100;
-            if(percent < 75)
+            if (percent < 75 && percent > 25) {
                 $('#editorContainer').css('max-height', percent + 5 + '%');
-            if(percent > 25)
                 $('#editorContainer').css('min-height', percent - 5 + '%');
+            }
+            editor.refresh();
+            CheckScrollbar();
         }
-
-        editor.resize();
-        resultEditor.resize();
+        //resultEditor.refresh();
     }
 });
 
@@ -27,12 +27,12 @@ var infoSplitter = $("#resultInfoContainer").split({
         if (parentWidth > 75) {
             var newWidth = $('#tree').width();
             var percent = newWidth / parentWidth * 100;
-            if(percent < 75)
+            if (percent < 75 && percent > 25) {
                 $('#tree').css('max-width', percent + 5 + '%');
-            if(percent > 25)
                 $('#tree').css('min-width', percent - 5 + '%');
+            }
         }
 
-        resultEditor.resize();
+        //resultEditor.refresh();
     }
 });

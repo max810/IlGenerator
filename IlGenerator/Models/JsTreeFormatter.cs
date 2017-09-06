@@ -15,7 +15,7 @@ namespace IlGenerator.Models
                 children = types.Select(type =>
                     new JSTreeNode(type.Name, type.SystemInfo, type.CustomAttributes, SourceCodeFormatter.ResolveType(type))
                     {
-                        children = new object[]
+                        children = new []
                         {
                             new
                             {

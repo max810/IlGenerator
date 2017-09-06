@@ -19,7 +19,9 @@ namespace IlGenerator.Models
             var csc = new CSharpCodeProvider();
             string[] dlls = Properties.Settings.Default.CompilerDllReferences.Split(' ');
 
-            var parameters = new CompilerParameters(dlls, @"C:\Users\maxbe\Desktop\MyTempFiles\foo.dll", true)
+            string path = System.IO.Path.Combine(HttpContext.Current.Server.MapPath("~/Content"), "foo.dll"); 
+
+            var parameters = new CompilerParameters(dlls, path, true)
             {
                 GenerateExecutable = false,
                 WarningLevel = 4

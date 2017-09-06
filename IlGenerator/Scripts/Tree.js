@@ -1,31 +1,4 @@
-﻿function updateTree(dataObject) {
-    var warnings = dataObject.Warnings;
-    var errors = dataObject.Errors;
-    editor.getSession().setAnnotations(warnings.map(x => toAnnotation(x, 'warning')));
-    if (errors.length != 0) {
-        $('#tree').html(errors.map(x => x.TextMessage).join('<br>'));
-        $('#tree').attr('color', 'red');
-        editor.getSession().setAnnotations(errors.map(x => toAnnotation(x, 'error')));
-        resultEditor.setValue('');
-    }
-    else if (!dataObject.Tree.children.length) {
-        $('#tree').html('Nothing to disassemble. Insert your code in the upper editor.');
-    }
-    else {
-        createTree(dataObject);
-    }
-}
-
-function toAnnotation(errorInfo, type) {
-    return ({
-        row: errorInfo.Row - 1,
-        column: errorInfo.Column,
-        text: errorInfo.HighlightMessage,
-        type: type
-    });
-}
-
-function createTree(dataObject) {
+﻿function createTree(tree) {
     $('#tree').jstree('destroy');
     var tree = $('#tree').jstree(
         {
@@ -90,7 +63,7 @@ function createTree(dataObject) {
             },
             'core': {
                 'multiple': false,
-                'data': jsonEncode(dataObject.Tree)
+                'data': jsonEncode(tree)
             },
             'plugins': ['types']
 
@@ -98,10 +71,9 @@ function createTree(dataObject) {
     tree.on('changed.jstree', function (e, data) {
         var curr = data.node;
         var decodedString = decode(curr.data);
-        $('#IlCode').val(decodedString);
         resultEditor.setValue(decodedString);
-        resultEditor.session.selection.clearSelection();
+        resultEditor.setCursor({ line: 1, ch: 1 });
     });
     $('#IlCode').val('');
-    resultEditor.setValue('');
+    //resultEditor.setValue('');
 }

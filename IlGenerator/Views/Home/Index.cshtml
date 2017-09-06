@@ -11,10 +11,18 @@
     <link rel="stylesheet" href="~/Scripts/jstree/dist/themes/default/style.css" />
     <link rel="stylesheet" href="~/Content/bootstrap.css" />
     <link rel="stylesheet" href="~/Content/jquery.splitter.css" />
+    <link rel="stylesheet" href="~/Scripts/CodeMirror/lib/codemirror.css" />
+    <link rel="stylesheet" href="~/Scripts/CodeMirror/theme/monokai.css" />
+    <link rel="stylesheet" href="~/Scripts/CodeMirror/theme/ambiance-mobile.css" />
+    <link rel="stylesheet" href="~/Scripts/CodeMirror/theme/ambiance.css" />
     <link rel="stylesheet" href="~/Content/Site.css" />
-    <link rel="stylesheet" href="~/Scripts/scrollbar/jquery.scrollbar.css" />
+    <link rel="stylesheet" href="~/Scripts/CodeMirror/addon/lint/lint.css" />
     @Scripts.Render("~/Scripts/jquery-1.10.2.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    <script>
+        var ERRORS = [];
+
+    </script>
 </head>
 <body>
     <div class="navbar-default" id="header">
@@ -22,20 +30,17 @@
         <button class="btn btn-default text-center" style="height: 30px; margin-bottom: 4px;" onclick="$('#inputForm').submit();">
             <span style="vertical-align: top">Disassemble</span>
         </button>
-        <button class="btn topNavbarButton" id="fontLarger" onclick="changeFont(2)">
-        </button>
-        <button class="btn topNavbarButton" id="fontSmaller" onclick="changeFont(-2)">
-        </button>
-        <input type="number" min="1" max="48" value="12" id="fontSizeInput"/>
+        <button class="btn topNavbarButton" id="fontLarger" onclick="changeFont(2)"></button>
+        <button class="btn topNavbarButton" id="fontSmaller" onclick="changeFont(-2)"></button>
+        <input type="number" min="1" max="48" value="12" id="fontSizeInput" />
     </div>
-    <textarea id="IlCode" style="display:none"></textarea>
-    @using (Ajax.BeginForm("ResultCode", null, new AjaxOptions() { OnSuccess = "updateTree" },
+    @using (Ajax.BeginForm("ResultCode", null, new AjaxOptions() { OnSuccess = "updateResultInfo" },
         new
         {
             id = "inputForm"
         }))
     {
-        <textarea name="sourceCode" id="sourceCode" style="display: none"></textarea>
+
     }
     <div id="content">
         <div id="editorContainer" class="editorContainer">
@@ -46,7 +51,18 @@
                 <button class="editorButton tp-r" data-toggle="tooltip" title="Undo" id="editorUndoButton" onclick="editor.undo()"></button>
                 <button class="editorButton tp-r" data-toggle="tooltip" title="Redo" id="editorRedoButton" onclick="editor.redo()"></button>
             </div>
-            <div id="editor" class="editor scrollbar-inner"></div>
+            <textarea id="editor" form="inputForm" name="sourceCode" style="display: none;">
+using System;
+					
+public class Program
+{
+	public static void Main()
+	{
+		Console.WriteLine("Hello World");
+	}
+}
+</textarea>
+            <!--<div id="editor" class="editor scrollbar-inner"></div>-->
         </div>
         <div id="resultInfoContainer">
             <div id="tree" class="scrollbar-outer"></div>
@@ -56,36 +72,43 @@
                     <button class="editorButton btn-dark tp-r tp-dark" title="Copy all" id="resultEditorCopyAllButton" data-clipboard-target="#IlCode"></button>
                     <button class="editorButton btn-dark tp-r tp-dark" title="Clear all" id="resultEditorClearAllButton" onclick="resultEditor.setValue('');"></button>
                 </div>
-                <div id="resultEditor" class="editor"></div>
+                <textarea id="resultEditor"></textarea>
             </div>
         </div>
     </div>
 
     <script src="~/Scripts/ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="~/Scripts/CodeMirror/lib/codemirror.js"></script>
+    <script src="~/Scripts/CodeMirror/mode/clike/clike.js"></script>
+    <script src="~/Scripts/CodeMirror/mode/javascript/javascript.js"></script>
     <script src="~/Scripts/jstree/dist/jstree.js" type="text/javascript" charset="utf-8"></script>
     <script src="~/Scripts/jquery.splitter.js"></script>
-    <script src="~/Scripts/Editors.js" type="text/javascript" charset="utf-8"></script>
     <script src="~/Scripts/Splitters.js" type="text/javascript" charset="utf-8"></script>
-    <script src="~/Scripts/Tree.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
     <script type="text/javascript" src="~/Scripts/clipboard/clipboard.js"></script>
+    <script src="~/Scripts/CodeMirror/addon/hint/jshint.js"></script>
+    <script src="~/Scripts/CodeMirror/addon/lint/lint.js"></script>
+    <script src="~/Scripts/CodeMirror/addon/lint/javascript-lint.js"></script>
+    <script src="~/Scripts/Editors.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="~/Scripts/EventHandlers.js" charset="utf-8"></script>
-    <script type="text/javascript" src="~/Scripts/scrollbar/jquery.scrollbar.js" charset="utf-8"></script>
+    <script src="~/Scripts/Tree.js" type="text/javascript" charset="utf-8"></script>
     <script>
+
+    
         var font = 12;
         $(document).css('font-size', '12px');
         $('#content').height('100%');
-        $('#editorContainer').css('height', '50%');
         $('#tree').css('width', '50%');
         $('.topNavbarButton').mouseup(function () {
             $(this).blur();
         });
         function changeFont(mod) {
             font += mod;
-            $('#editor').css('font-size', font + 'px');
+            $('.CodeMirror').css('font-size', font + 'px');
             $('#tree').css('font-size', font + 'px');
-            $('#resultEditor').css('font-size', font + 'px');
             $('#fontSizeInput').val(font);
+            editor.refresh();
+            //resultEditor.refresh();
         }
         $('#fontSizeInput').change(function () {
             var newVal = $('#fontSizeInput').val();
@@ -100,13 +123,36 @@
                 $(this).blur();
             }
         });
-        $('.ace_scrollbar-h, ace_scrollbar-v').resize(function () {
-            $('.ace_scrollbar-v').css('width', '24px');
-            $('.ace_scrollbar-v').css('height', '24px');
-            $('.ace_scroller').css('right', 0);
-            $('.ace_scroller').css('bottom', 0);
-            
-        });
+
+        function CheckScrollbar() {
+            if ($('.CodeMirror-lines').outerHeight() > $('.CodeMirror-scroll').height()) {
+                $('.CodeMirror-scroll').css('overflow-y', 'auto');
+            } else {
+                $('.CodeMirror-scroll').css('overflow-y', 'hidden');
+            }
+        }
+        $(window).resize(CheckScrollbar);
+        var widgets = []
+        function updateHints() {
+            editor.operation(function () {
+                for (var i = 0; i < widgets.length; ++i)
+                    editor.removeLineWidget(widgets[i]);
+                widgets.length = 0;
+
+                JSHINT(editor.getValue());
+                for (var i = 0; i < JSHINT.errors.length; ++i) {
+                    var err = JSHINT.errors[i];
+                    if (!err) continue;
+                    var msg = document.createElement("div");
+                    var icon = msg.appendChild(document.createElement("span"));
+                    icon.innerHTML = "!!";
+                    icon.className = "lint-error-icon";
+                    msg.appendChild(document.createTextNode(err.reason));
+                    msg.className = "lint-error";
+                    widgets.push(editor.addLineWidget(err.line - 1, msg, { coverGutter: false, noHScroll: true }));
+                }
+            });
+        }
     </script>
 </body>
 </html>

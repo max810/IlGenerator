@@ -21,23 +21,47 @@ function jsonEncode(jsonObject) {
     return JSON.parse(newstr);
 }
 
-var editor = ace.edit("editor");
-editor.setTheme("ace/theme/monokai");
-editor.getSession().setMode("ace/mode/csharp");
-editor.$blockScrolling = Infinity;
+var editor = CodeMirror.fromTextArea(document.getElementById('editor'),
+    {
+        lineNumbers: true,
+        mode: 'text/x-csharp',
+        //mode: "javascript",
+        gutters: ["CodeMirror-lint-markers"],
+        lint: {
+            lintOnChange: false,
+        },
+        theme: 'ambiance'
+    });
 
-editor.session.setOption("useWorker", false);
-
-editor.getSession().on("change", function () {
-    $('textarea[name="sourceCode"]').val(encode(editor.getSession().getValue()));
-    $('#editorCopyButton').attr('data-clipboard-text', editor.getSession().getValue());
+editor.on('change', function (cm) {
+    cm.save();
     $("#inputForm").submit();
 });
 
+CodeMirror.registerHelper('lint', 'text/x-csharp', function (editor, text) { return ERRORS; });
+var resultEditor = CodeMirror.fromTextArea(document.getElementById('resultEditor'),
+    {
+        lineNumbers: true,
+        mode: 'text/x-csharp',
+        readOnly: 'nocursor'
+    });
+//var editor = ace.edit("editor");
+//editor.setTheme("ace/theme/monokai");
+//editor.getSession().setMode("ace/mode/csharp");
+//editor.$blockScrolling = Infinity;
 
-var resultEditor = ace.edit("resultEditor");
-editor.setTheme("ace/theme/monokai");
-resultEditor.getSession().setMode("ace/mode/csharp-il");
-resultEditor.session.setOption("useWorker", false);
-resultEditor.$blockScrolling = Infinity;
-resultEditor.setReadOnly(true);
+//editor.session.setOption("useWorker", false);
+
+//editor.getSession().on("change", function () {
+//    $('textarea[name="sourceCode"]').val(encode(editor.getSession().getValue()));
+//    $('#editorCopyButton').attr('data-clipboard-text', editor.getSession().getValue());
+//    $("#inputForm").submit();
+//});
+
+
+//var resultEditor = ace.edit("resultEditor");
+//editor.setTheme("ace/theme/monokai");
+//resultEditor.getSession().setMode("ace/mode/csharp-il");
+//resultEditor.session.setOption("useWorker", false);
+//resultEditor.$blockScrolling = Infinity;
+//resultEditor.setReadOnly(true);

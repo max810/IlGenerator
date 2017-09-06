@@ -11,20 +11,20 @@ namespace IlGenerator.Models
         public bool IsWarning;
         public string HighlightMessage;
         public string TextMessage;
-        public int Row;
+        public int Line;
         public int Column;
-        public ErrorInfo(bool isWarning, string highlight, string text, int row, int col)
+        public ErrorInfo(bool isWarning, string highlight, string text, int line, int col)
         {
             IsWarning = isWarning;
             HighlightMessage = highlight;
             TextMessage = text;
-            Row = row;
+            Line = line;
             Column = col;
         }
         public ErrorInfo(CompilerError error)
         {
             IsWarning = error.IsWarning;
-            Row = error.Line;
+            Line = error.Line;
             Column = error.Column;
             HighlightMessage = error.ErrorText;
             TextMessage = $"Compilation error {error.ErrorNumber} (line {error.Line}, col {error.Column}): {HighlightMessage}";
