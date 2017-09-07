@@ -1,0 +1,14 @@
+packages/
+bin/
+fonts/
+obj/
+
+*.csproj.user
+*.csproj
+*.sln
+
+*.dll
+*.pdb
+
+Web.Debug.config
+Web.Release.config

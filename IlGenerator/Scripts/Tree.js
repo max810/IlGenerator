@@ -75,5 +75,5 @@
         resultEditor.setCursor({ line: 1, ch: 1 });
     });
     $('#IlCode').val('');
-    //resultEditor.setValue('');
+    resultEditor.setValue('');
 }

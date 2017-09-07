@@ -45,23 +45,3 @@ var resultEditor = CodeMirror.fromTextArea(document.getElementById('resultEditor
         mode: 'text/x-csharp',
         readOnly: 'nocursor'
     });
-//var editor = ace.edit("editor");
-//editor.setTheme("ace/theme/monokai");
-//editor.getSession().setMode("ace/mode/csharp");
-//editor.$blockScrolling = Infinity;
-
-//editor.session.setOption("useWorker", false);
-
-//editor.getSession().on("change", function () {
-//    $('textarea[name="sourceCode"]').val(encode(editor.getSession().getValue()));
-//    $('#editorCopyButton').attr('data-clipboard-text', editor.getSession().getValue());
-//    $("#inputForm").submit();
-//});
-
-
-//var resultEditor = ace.edit("resultEditor");
-//editor.setTheme("ace/theme/monokai");
-//resultEditor.getSession().setMode("ace/mode/csharp-il");
-//resultEditor.session.setOption("useWorker", false);
-//resultEditor.$blockScrolling = Infinity;
-//resultEditor.setReadOnly(true);

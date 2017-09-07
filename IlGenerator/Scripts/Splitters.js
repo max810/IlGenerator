@@ -1,4 +1,4 @@
-﻿var codeSplitter = $("#content").height('100%').split({
+﻿var codeSplitter = $("#content").split({
     orientation: 'horizontal',
     limit: 50,
     position: '50%',
@@ -13,8 +13,8 @@
             }
             editor.refresh();
             CheckScrollbar();
+            resultEditor.refresh();
         }
-        //resultEditor.refresh();
     }
 });
 
@@ -31,8 +31,7 @@ var infoSplitter = $("#resultInfoContainer").split({
                 $('#tree').css('max-width', percent + 5 + '%');
                 $('#tree').css('min-width', percent - 5 + '%');
             }
-        }
-
-        //resultEditor.refresh();
+            CheckScrollbar();
+            resultEditor.refresh();}
     }
 });

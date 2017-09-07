@@ -88,7 +88,6 @@ public class Program
     <script type="text/javascript" src="~/Scripts/clipboard/clipboard.js"></script>
     <script src="~/Scripts/CodeMirror/addon/hint/jshint.js"></script>
     <script src="~/Scripts/CodeMirror/addon/lint/lint.js"></script>
-    <script src="~/Scripts/CodeMirror/addon/lint/javascript-lint.js"></script>
     <script src="~/Scripts/Editors.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript" src="~/Scripts/EventHandlers.js" charset="utf-8"></script>
     <script src="~/Scripts/Tree.js" type="text/javascript" charset="utf-8"></script>
@@ -108,7 +107,7 @@ public class Program
             $('#tree').css('font-size', font + 'px');
             $('#fontSizeInput').val(font);
             editor.refresh();
-            //resultEditor.refresh();
+            resultEditor.refresh();
         }
         $('#fontSizeInput').change(function () {
             var newVal = $('#fontSizeInput').val();
