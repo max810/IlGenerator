@@ -47,7 +47,8 @@ div.CodeMirror {
 
 div.CodeMirror-scroll {
     height: 100%;
-    overflow-y: auto;
+    overflow-y: scroll;
+    overflow-x: scroll;
 }
 
 div.CodeMirror-gutter{
@@ -59,8 +60,8 @@ div.editorContainer {
 }
 
 #editorContainer {
-    min-height: 45%;
-    max-height: 55%;
+    min-height: 25%;
+    max-height: 75%;
     height: 50%;
     overflow: hidden;
 }
@@ -89,8 +90,8 @@ div.editorNavbar {
 #tree {
     font-family: monospace;
     font-size: 12px;
-    min-width: 45%;
-    max-width: 55%;
+    min-width: 25%;
+    max-width: 75%;
     width: 50%;
 }
 
@@ -204,7 +205,18 @@ button.topNavbarButton {
     background-image: url(/Content/Icons/redo.png);
 }
 
+.jstree-node {
+    font-size: 12px;
+    height: 100%;
+}
 
+    .jstree-node a.jstree-hovered {
+        height: 100%;
+    }
+
+    .jstree-node a.jstree-clicked {
+        height: 100%;
+    }
 
 #resultEditorSelectAllButton {
     background-image: url(/Content/Icons/select-all-dark.png);

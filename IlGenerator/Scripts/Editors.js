@@ -25,12 +25,12 @@ var editor = CodeMirror.fromTextArea(document.getElementById('editor'),
     {
         lineNumbers: true,
         mode: 'text/x-csharp',
-        //mode: "javascript",
         gutters: ["CodeMirror-lint-markers"],
         lint: {
             lintOnChange: false,
         },
-        theme: 'ambiance'
+        theme: 'ambiance',
+        scrollbarStyle: "overlay"
     });
 
 editor.on('change', function (cm) {
@@ -43,5 +43,7 @@ var resultEditor = CodeMirror.fromTextArea(document.getElementById('resultEditor
     {
         lineNumbers: true,
         mode: 'text/x-csharp',
-        readOnly: 'nocursor'
+        readOnly: 'nocursor',
+        scrollbarStyle: "overlay",
+        theme: 'neat'
     });

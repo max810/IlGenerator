@@ -12,16 +12,16 @@
     <link rel="stylesheet" href="~/Content/bootstrap.css" />
     <link rel="stylesheet" href="~/Content/jquery.splitter.css" />
     <link rel="stylesheet" href="~/Scripts/CodeMirror/lib/codemirror.css" />
-    <link rel="stylesheet" href="~/Scripts/CodeMirror/theme/monokai.css" />
-    <link rel="stylesheet" href="~/Scripts/CodeMirror/theme/ambiance-mobile.css" />
+    <link rel="stylesheet" href="~/Scripts/CodeMirror/theme/neat.css" />
     <link rel="stylesheet" href="~/Scripts/CodeMirror/theme/ambiance.css" />
     <link rel="stylesheet" href="~/Content/Site.css" />
     <link rel="stylesheet" href="~/Scripts/CodeMirror/addon/lint/lint.css" />
+    <link rel="stylesheet" href="~/Scripts/CodeMirror/addon/scrollbar/simplescrollbars.css" />
     @Scripts.Render("~/Scripts/jquery-1.10.2.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
     <script>
         var ERRORS = [];
-
+        var font = 12;
     </script>
 </head>
 <body>
@@ -53,15 +53,14 @@
             </div>
             <textarea id="editor" form="inputForm" name="sourceCode" style="display: none;">
 using System;
-					
+
 public class Program
 {
 	public static void Main()
 	{
 		Console.WriteLine("Hello World");
 	}
-}
-</textarea>
+}</textarea>
             <!--<div id="editor" class="editor scrollbar-inner"></div>-->
         </div>
         <div id="resultInfoContainer">
@@ -72,15 +71,14 @@ public class Program
                     <button class="editorButton btn-dark tp-r tp-dark" title="Copy all" id="resultEditorCopyAllButton" data-clipboard-target="#IlCode"></button>
                     <button class="editorButton btn-dark tp-r tp-dark" title="Clear all" id="resultEditorClearAllButton" onclick="resultEditor.setValue('');"></button>
                 </div>
-                <textarea id="resultEditor"></textarea>
+                <textarea id="resultEditor" style="display: none;"></textarea>
             </div>
         </div>
     </div>
 
-    <script src="~/Scripts/ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="~/Scripts/CodeMirror/lib/codemirror.js"></script>
     <script src="~/Scripts/CodeMirror/mode/clike/clike.js"></script>
-    <script src="~/Scripts/CodeMirror/mode/javascript/javascript.js"></script>
+    <script src="~/Scripts/CodeMirror/addon/scrollbar/simplescrollbars.js"></script>
     <script src="~/Scripts/jstree/dist/jstree.js" type="text/javascript" charset="utf-8"></script>
     <script src="~/Scripts/jquery.splitter.js"></script>
     <script src="~/Scripts/Splitters.js" type="text/javascript" charset="utf-8"></script>
@@ -92,9 +90,6 @@ public class Program
     <script type="text/javascript" src="~/Scripts/EventHandlers.js" charset="utf-8"></script>
     <script src="~/Scripts/Tree.js" type="text/javascript" charset="utf-8"></script>
     <script>
-
-    
-        var font = 12;
         $(document).css('font-size', '12px');
         $('#content').height('100%');
         $('#tree').css('width', '50%');
@@ -104,14 +99,14 @@ public class Program
         function changeFont(mod) {
             font += mod;
             $('.CodeMirror').css('font-size', font + 'px');
-            $('#tree').css('font-size', font + 'px');
+            changeTreeFont(font);
             $('#fontSizeInput').val(font);
             editor.refresh();
             resultEditor.refresh();
         }
         $('#fontSizeInput').change(function () {
             var newVal = $('#fontSizeInput').val();
-            if (newVal >= 2 && newVal <= 48)
+            if (newVal >= 4 && newVal <= 36)
                 changeFont($('#fontSizeInput').val() - font);
             else {
                 $('#fontSizeInput').val(font);
@@ -122,36 +117,6 @@ public class Program
                 $(this).blur();
             }
         });
-
-        function CheckScrollbar() {
-            if ($('.CodeMirror-lines').outerHeight() > $('.CodeMirror-scroll').height()) {
-                $('.CodeMirror-scroll').css('overflow-y', 'auto');
-            } else {
-                $('.CodeMirror-scroll').css('overflow-y', 'hidden');
-            }
-        }
-        $(window).resize(CheckScrollbar);
-        var widgets = []
-        function updateHints() {
-            editor.operation(function () {
-                for (var i = 0; i < widgets.length; ++i)
-                    editor.removeLineWidget(widgets[i]);
-                widgets.length = 0;
-
-                JSHINT(editor.getValue());
-                for (var i = 0; i < JSHINT.errors.length; ++i) {
-                    var err = JSHINT.errors[i];
-                    if (!err) continue;
-                    var msg = document.createElement("div");
-                    var icon = msg.appendChild(document.createElement("span"));
-                    icon.innerHTML = "!!";
-                    icon.className = "lint-error-icon";
-                    msg.appendChild(document.createTextNode(err.reason));
-                    msg.className = "lint-error";
-                    widgets.push(editor.addLineWidget(err.line - 1, msg, { coverGutter: false, noHScroll: true }));
-                }
-            });
-        }
     </script>
 </body>
 </html>

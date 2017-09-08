@@ -165,6 +165,15 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
   outline: none; /* Prevent dragging from highlighting the element */
   position: relative;
 }
+/*Because at small scaling (around 33% and less) outer scrollbars become visible*/
+@media all and (min-width: 2000px){
+    .CodeMirror-scroll{
+        margin-bottom: -100px;
+        margin-right: -100px;
+        padding-bottom: 100px;
+    }
+}
+
 .CodeMirror-sizer {
   position: relative;
   border-right: 30px solid transparent;

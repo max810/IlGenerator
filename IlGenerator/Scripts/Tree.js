@@ -74,6 +74,12 @@
         resultEditor.setValue(decodedString);
         resultEditor.setCursor({ line: 1, ch: 1 });
     });
+    tree.on('open_node.jstree', function () { changeTreeFont(font) });
+    tree.on('close_node.jstree', function () { changeTreeFont(font) });
     $('#IlCode').val('');
     resultEditor.setValue('');
+}
+function changeTreeFont(newFontSize) {
+    if(newFontSize <= 24)
+        $('.jstree-node').css('font-size', newFontSize + 'px');
 }
