@@ -9,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
 
 namespace IlGenerator.Controllers
 {
@@ -27,7 +28,9 @@ namespace IlGenerator.Controllers
         {
             string sourceCodeDecoded = WebUtility.HtmlDecode(sourceCode);
 
-            CompilerResults compiled = SourceCodeGenerator.CompileDefaultAssembly(sourceCodeDecoded);
+            string assemblyName = Guid.NewGuid().ToString();
+
+            CompilerResults compiled = SourceCodeGenerator.CompileDefaultAssembly(sourceCodeDecoded, assemblyName);
 
             var assembly = AssemblyDefinition.ReadAssembly(compiled.PathToAssembly);
 
@@ -37,11 +40,20 @@ namespace IlGenerator.Controllers
 
             var allErrors = compiled.Errors.Cast<CompilerError>().Select(x => new ErrorInfo(x));
 
+            string dirPath = Request.MapPath("~/App_Data/TempAssemblies");
+            string assemblyFullName = Path.Combine(dirPath, assemblyName + ".dll");
+            string debugFullName = Path.Combine(dirPath, assemblyName + ".pdb");
+
+            if(System.IO.File.Exists(assemblyFullName))
+                System.IO.File.Delete(assemblyFullName);
+            if (System.IO.File.Exists(assemblyFullName))
+                System.IO.File.Delete(debugFullName);
+
             return Json(new
             {
                 Tree = tree,
                 Errors = allErrors.Where(x => !x.IsWarning),
-                Warnings = allErrors.Where(x => x.IsWarning)
+                Warnings = allErrors.Where(x => x.IsWarning),
             });
         }
     }

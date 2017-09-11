@@ -14,12 +14,12 @@ namespace IlGenerator.Models
 {
     public static class SourceCodeGenerator
     {
-        public static CompilerResults CompileDefaultAssembly(string sourceCode)
+        public static CompilerResults CompileDefaultAssembly(string sourceCode, string assemblyName)
         {
             var csc = new CSharpCodeProvider();
             string[] dlls = Properties.Settings.Default.CompilerDllReferences.Split(' ');
 
-            string path = System.IO.Path.Combine(HttpContext.Current.Server.MapPath("~/Content"), "foo.dll"); 
+            string path = System.IO.Path.Combine(HttpContext.Current.Server.MapPath("~/App_Data/TempAssemblies"), assemblyName + ".dll"); 
 
             var parameters = new CompilerParameters(dlls, path, true)
             {

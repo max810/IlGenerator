@@ -46,6 +46,10 @@ $(document).ready(function () {
     });
 
     editor.refresh();
+    var prevCode = getCookie('sourceCode');
+    if (prevCode != '') {
+        editor.setValue(decodeURIComponent(prevCode));
+    }
     $("#inputForm").submit();
     changeFont(0);
 });
@@ -54,16 +58,6 @@ var clipboard = new Clipboard('.tp-r');
 clipboard.on('error', function (e) {
     setTemporaryTooltip(e.trigger, 'Not supported in your browser(', 2000);
 });
-
-function editorSelectAll() {
-    editor.selection.selectAll();
-}
-function editorUndo() {
-    editor.undo();
-}
-function editorRedo() {
-    editor.redo();
-}
 
 function updateResultInfo(dataObject) {
     var warnings = dataObject.Warnings;
@@ -80,9 +74,29 @@ function updateResultInfo(dataObject) {
         $('#tree').html('Nothing to disassemble. Insert your code in the upper editor.');
     }
     else {
+        setCookie('sourceCode', encodeURIComponent(editor.getValue()), 7);
         createTree(dataObject.Tree);
     }
     resultEditor.setValue('');
+}
+
+function getCookie(name) {
+    var results = document.cookie.split('; ').map(x => x.split('=')).filter(x => x[0] == name);
+    if (results.length) {
+        return decodeURIComponent(results[0][1]);
+    }
+    return '';
+}
+
+function setCookie(name, value, expireDays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (expireDays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = name + "=" + value + "; " + expires + "; path=/";
+}
+
+function deleteCookie(name) {
+    document.cookie = name + '=; ' + 'expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }
 
 function toError(errorInfo, severity) {
