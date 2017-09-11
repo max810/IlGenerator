@@ -49,7 +49,7 @@ $(document).ready(function () {
     $("#inputForm").submit();
     changeFont(0);
 });
-var clipboard = new Clipboard('#editorCopyAllButton');
+var clipboard = new Clipboard('.tp-r');
 
 clipboard.on('error', function (e) {
     setTemporaryTooltip(e.trigger, 'Not supported in your browser(', 2000);

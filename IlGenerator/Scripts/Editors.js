@@ -42,7 +42,7 @@ CodeMirror.registerHelper('lint', 'text/x-csharp', function (editor, text) { ret
 var resultEditor = CodeMirror.fromTextArea(document.getElementById('resultEditor'),
     {
         lineNumbers: true,
-        mode: 'text/x-csharp',
+        mode: 'text/x-il',
         readOnly: 'nocursor',
         scrollbarStyle: "overlay",
         theme: 'neat'

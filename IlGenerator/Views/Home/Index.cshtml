@@ -22,6 +22,7 @@
     <script>
         var ERRORS = [];
         var font = 12;
+        var treeFont = 12;
     </script>
 </head>
 <body>
@@ -32,7 +33,7 @@
         </button>
         <button class="btn topNavbarButton" id="fontLarger" onclick="changeFont(2)"></button>
         <button class="btn topNavbarButton" id="fontSmaller" onclick="changeFont(-2)"></button>
-        <input type="number" min="1" max="48" value="12" id="fontSizeInput" />
+        <input type="number" min="4" max="36" value="12" id="fontSizeInput" />
     </div>
     @using (Ajax.BeginForm("ResultCode", null, new AjaxOptions() { OnSuccess = "updateResultInfo" },
         new
@@ -45,8 +46,8 @@
     <div id="content">
         <div id="editorContainer" class="editorContainer">
             <div class="btn-group-vertical editorNavbar">
-                <button class="editorButton tp-r" data-toggle="tooltip" title="Select all" id="editorSelectAllButton" onclick="editor.selectAll(); editor.focus()"></button>
-                <button class="editorButton tp-r" data-toggle="tooltip" title="Copy all" id="editorCopyAllButton" data-clipboard-target="#sourceCode"></button>
+                <button class="editorButton tp-r" data-toggle="tooltip" title="Select all" id="editorSelectAllButton" onclick="selectAll(editor)"></button>
+                <button class="editorButton tp-r" data-toggle="tooltip" title="Copy all" id="editorCopyAllButton" data-clipboard-target="#editor" onclick="selectAll(editor)"></button>
                 <button class="editorButton tp-r" data-toggle="tooltip" title="Clear all" id="editorClearAllButton" onclick="editor.setValue('');"></button>
                 <button class="editorButton tp-r" data-toggle="tooltip" title="Undo" id="editorUndoButton" onclick="editor.undo()"></button>
                 <button class="editorButton tp-r" data-toggle="tooltip" title="Redo" id="editorRedoButton" onclick="editor.redo()"></button>
@@ -67,8 +68,8 @@ public class Program
             <div id="tree" class="scrollbar-outer"></div>
             <div id="resultEditorContainer" class="editorContainer">
                 <div id="resultEditorNavbar" class="btn-group-vertical editorNavbar">
-                    <button class="editorButton btn-dark tp-r tp-dark" title="Select all" id="resultEditorSelectAllButton" onclick="resultEditor.selectAll(); resultEditor.focus()"></button>
-                    <button class="editorButton btn-dark tp-r tp-dark" title="Copy all" id="resultEditorCopyAllButton" data-clipboard-target="#IlCode"></button>
+                    <button class="editorButton btn-dark tp-r tp-dark" title="Select all" id="resultEditorSelectAllButton" onclick="selectAll(resultEditor)"></button>
+                    <button class="editorButton btn-dark tp-r tp-dark" title="Copy all" id="resultEditorCopyAllButton" data-clipboard-target="#resultEditor" onclick="selectAll(resultEditor)"></button>
                     <button class="editorButton btn-dark tp-r tp-dark" title="Clear all" id="resultEditorClearAllButton" onclick="resultEditor.setValue('');"></button>
                 </div>
                 <textarea id="resultEditor" style="display: none;"></textarea>
@@ -98,8 +99,13 @@ public class Program
         });
         function changeFont(mod) {
             font += mod;
+            if (font <= 24) {
+                treeFont = font;
+            } else {
+                treeFont = 24;
+            }
             $('.CodeMirror').css('font-size', font + 'px');
-            changeTreeFont(font);
+            changeTreeFont(treeFont);
             $('#fontSizeInput').val(font);
             editor.refresh();
             resultEditor.refresh();
@@ -117,6 +123,12 @@ public class Program
                 $(this).blur();
             }
         });
+        function selectAll(someEditor) {
+            var end = someEditor.lastLine();
+            var endLength = someEditor.getLine(end).length;
+            someEditor.setSelection(CodeMirror.Pos(0, 0), CodeMirror.Pos(end, endLength));
+            someEditor.focus();
+        }
     </script>
 </body>
 </html>
