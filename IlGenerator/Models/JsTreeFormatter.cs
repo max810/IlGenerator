@@ -29,7 +29,7 @@ namespace IlGenerator.Models
                                 new JSTreeNode(
                                     x.Name,
                                     x.SystemInfo,
-                                    x.CustomAttributes,
+                                    AttributesOrEmptyString(x.CustomAttributes),
                                     SourceCodeFormatter.ResolveType(x)))
                             },
                             new
@@ -43,7 +43,7 @@ namespace IlGenerator.Models
                                 new JSTreeNode(
                                     x.Name,
                                     x.SystemInfo,
-                                    (string.IsNullOrWhiteSpace(x.CustomAttributes) ? "" : (x.CustomAttributes + Environment.NewLine))
+                                    AttributesOrEmptyString(x.CustomAttributes)
                                         + x.GetterInfo
                                         + Environment.NewLine + x.SetterInfo,
                                     SourceCodeFormatter.ResolveType(x)))
@@ -59,7 +59,7 @@ namespace IlGenerator.Models
                                 new JSTreeNode(
                                     x.Name,
                                     x.SystemInfo,
-                                    (string.IsNullOrWhiteSpace(x.CustomAttributes) ? "" : (x.CustomAttributes + Environment.NewLine))
+                                    AttributesOrEmptyString(x.CustomAttributes)
                                         + x.AddOnInfo
                                         + Environment.NewLine + x.RemoveOnInfo,
                                     SourceCodeFormatter.ResolveType(x)))
@@ -75,7 +75,7 @@ namespace IlGenerator.Models
                                 new JSTreeNode(
                                     x.Name,
                                     x.SystemInfo,
-                                    (string.IsNullOrWhiteSpace(x.CustomAttributes) ? "" : (x.CustomAttributes + Environment.NewLine))
+                                    AttributesOrEmptyString(x.CustomAttributes)
                                         + x.MethodBody,
                                     SourceCodeFormatter.ResolveType(x)))
                             },
@@ -86,5 +86,11 @@ namespace IlGenerator.Models
             return tree;
         }
 
+        private static string AttributesOrEmptyString(string attrs)
+        {
+            if (string.IsNullOrWhiteSpace(attrs))
+                return "";
+            return attrs + Environment.NewLine;
+        }
     }
 }

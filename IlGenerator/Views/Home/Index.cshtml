@@ -77,58 +77,19 @@ public class Program
         </div>
     </div>
 
+    <script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
     <script src="~/Scripts/CodeMirror/lib/codemirror.js"></script>
     <script src="~/Scripts/CodeMirror/mode/clike/clike.js"></script>
+    <script src="~/Scripts/CodeMirror/addon/hint/jshint.js"></script>
+    <script src="~/Scripts/CodeMirror/addon/lint/lint.js"></script>
     <script src="~/Scripts/CodeMirror/addon/scrollbar/simplescrollbars.js"></script>
     <script src="~/Scripts/jstree/dist/jstree.js" type="text/javascript" charset="utf-8"></script>
     <script src="~/Scripts/jquery.splitter.js"></script>
-    <script src="~/Scripts/Splitters.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
     <script type="text/javascript" src="~/Scripts/clipboard/clipboard.js"></script>
-    <script src="~/Scripts/CodeMirror/addon/hint/jshint.js"></script>
-    <script src="~/Scripts/CodeMirror/addon/lint/lint.js"></script>
+    <script src="~/Scripts/Functions.js"></script>
+    <script src="~/Scripts/PageConfig.js"></script>
+    <script src="~/Scripts/Splitters.js" type="text/javascript" charset="utf-8"></script>
     <script src="~/Scripts/Editors.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript" src="~/Scripts/EventHandlers.js" charset="utf-8"></script>
     <script src="~/Scripts/Tree.js" type="text/javascript" charset="utf-8"></script>
-    <script>
-        $(document).css('font-size', '12px');
-        $('#content').height('100%');
-        $('#tree').css('width', '50%');
-        $('.topNavbarButton').mouseup(function () {
-            $(this).blur();
-        });
-        function changeFont(mod) {
-            font += mod;
-            if (font <= 24) {
-                treeFont = font;
-            } else {
-                treeFont = 24;
-            }
-            $('.CodeMirror').css('font-size', font + 'px');
-            changeTreeFont(treeFont);
-            $('#fontSizeInput').val(font);
-            editor.refresh();
-            resultEditor.refresh();
-        }
-        $('#fontSizeInput').change(function () {
-            var newVal = $('#fontSizeInput').val();
-            if (newVal >= 4 && newVal <= 36)
-                changeFont($('#fontSizeInput').val() - font);
-            else {
-                $('#fontSizeInput').val(font);
-            }
-        });
-        $('#fontSizeInput').keydown(function (e) {
-            if (e.key == 'Enter') {
-                $(this).blur();
-            }
-        });
-        function selectAll(someEditor) {
-            var end = someEditor.lastLine();
-            var endLength = someEditor.getLine(end).length;
-            someEditor.setSelection(CodeMirror.Pos(0, 0), CodeMirror.Pos(end, endLength));
-            someEditor.focus();
-        }
-    </script>
 </body>
 </html>

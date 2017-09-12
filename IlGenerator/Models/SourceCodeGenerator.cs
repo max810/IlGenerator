@@ -21,7 +21,7 @@ namespace IlGenerator.Models
 
             string path = System.IO.Path.Combine(HttpContext.Current.Server.MapPath("~/App_Data/TempAssemblies"), assemblyName + ".dll"); 
 
-            var parameters = new CompilerParameters(dlls, path, true)
+            var parameters = new CompilerParameters(dlls, path, false)
             {
                 GenerateExecutable = false,
                 WarningLevel = 4
@@ -49,9 +49,3 @@ namespace IlGenerator.Models
         }
     }
 }
-
-//TODO
-//2. Error messages instead of tree
-//3. Errors highlight
-//4. Move tree making from c# to js 
-//5. Not ugly icons

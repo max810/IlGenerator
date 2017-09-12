@@ -288,7 +288,7 @@ namespace IlGenerator.Models
                 + " " + GetTypeAlias(attr.AttributeType)
                 + "::" + ctor.Name
                 + $"({string.Join(", ", ctor.Parameters.Select(x => GetTypeAlias(x.ParameterType)))})"
-                + $" = ( {string.Join(" ", attr.GetBlob().Select(x => string.Format("{0:X2}", x)))} )";
+                + $" = ( {string.Join(" ", attr.GetBlob().Select(x => string.Format("0x{0:X2}", x)))} )";
             return info;
         }
 

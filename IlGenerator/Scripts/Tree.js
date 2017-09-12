@@ -72,13 +72,8 @@
         var curr = data.node;
         var decodedString = decode(curr.data);
         resultEditor.setValue(decodedString);
-        resultEditor.setCursor({ line: 1, ch: 1 });
     });
     tree.on('open_node.jstree', function () { changeTreeFont(treeFont) });
-    tree.on('close_node.jstree', function () { changeTreeFont(treeFont) });
     $('#IlCode').val('');
     resultEditor.setValue('');
-}
-function changeTreeFont(newFontSize) {
-        $('.jstree-node').css('font-size', newFontSize + 'px');
 }

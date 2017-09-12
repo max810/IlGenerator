@@ -23,7 +23,7 @@ namespace IlGenerator.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        //param name is important
+        //param name is important = 'sourceCode' !
         public JsonResult ResultCode(string sourceCode)
         {
             string sourceCodeDecoded = WebUtility.HtmlDecode(sourceCode);
@@ -32,28 +32,34 @@ namespace IlGenerator.Controllers
 
             CompilerResults compiled = SourceCodeGenerator.CompileDefaultAssembly(sourceCodeDecoded, assemblyName);
 
+            var allErrors = compiled.Errors.Cast<CompilerError>().Select(x => new ErrorInfo(x));
+            var errors = allErrors.Where(x => !x.IsWarning);
+            var warnings = allErrors.Where(x => x.IsWarning);
+
+            if (errors.Any())
+            {
+                return Json(new
+                {
+                    Errors = errors,
+                    Warnings = warnings
+                });
+            }
+
             var assembly = AssemblyDefinition.ReadAssembly(compiled.PathToAssembly);
 
             var resultCodeInfo = SourceCodeGenerator.GenerateIlCode(assembly);
 
             var tree = JsTreeFormatter.ToJSTree(resultCodeInfo);
 
-            var allErrors = compiled.Errors.Cast<CompilerError>().Select(x => new ErrorInfo(x));
-
-            string dirPath = Request.MapPath("~/App_Data/TempAssemblies");
-            string assemblyFullName = Path.Combine(dirPath, assemblyName + ".dll");
-            string debugFullName = Path.Combine(dirPath, assemblyName + ".pdb");
-
+            string assemblyFullName = Path.Combine(Request.MapPath("~/App_Data/TempAssemblies"), assemblyName + ".dll");
             if(System.IO.File.Exists(assemblyFullName))
                 System.IO.File.Delete(assemblyFullName);
-            if (System.IO.File.Exists(assemblyFullName))
-                System.IO.File.Delete(debugFullName);
 
             return Json(new
             {
                 Tree = tree,
-                Errors = allErrors.Where(x => !x.IsWarning),
-                Warnings = allErrors.Where(x => x.IsWarning),
+                Errors = errors,
+                Warnings = warnings
             });
         }
     }
