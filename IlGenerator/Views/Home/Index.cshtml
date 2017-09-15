@@ -19,11 +19,6 @@
     <link rel="stylesheet" href="~/Scripts/CodeMirror/addon/scrollbar/simplescrollbars.css" />
     @Scripts.Render("~/Scripts/jquery-1.10.2.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
-    <script>
-        var ERRORS = [];
-        var font = 12;
-        var treeFont = 12;
-    </script>
 </head>
 <body>
     <div class="navbar-default" id="header">
@@ -62,7 +57,6 @@ public class Program
 		Console.WriteLine("Hello World");
 	}
 }</textarea>
-            <!--<div id="editor" class="editor scrollbar-inner"></div>-->
         </div>
         <div id="resultInfoContainer">
             <div id="tree" class="scrollbar-outer"></div>
@@ -76,7 +70,15 @@ public class Program
             </div>
         </div>
     </div>
-
+    <script>
+        var ERRORS = [];
+        var font = 12;
+        var treeFont = 12;
+        var hSplitterRatioPercent = 50;
+        var vSplitterRatioPercent = 48.25;
+        var contentHeight = $('#content').height();
+        var contentWidth = $('#content').width();
+    </script>
     <script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
     <script src="~/Scripts/CodeMirror/lib/codemirror.js"></script>
     <script src="~/Scripts/CodeMirror/mode/clike/clike.js"></script>

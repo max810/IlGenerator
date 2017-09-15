@@ -75,6 +75,13 @@ $(document).ready(function () {
         $("#inputForm").submit();
     }
 
+    $(window).resize(function () {
+        codeSplitter.position(hSplitterRatioPercent + '%');
+        infoSplitter.position(vSplitterRatioPercent + '%');
+        contentHeight = $('#content').height();
+        contentWidth = $('#content').width();
+    });
+
     //set 12px as a default
     changeFont(0);
 });

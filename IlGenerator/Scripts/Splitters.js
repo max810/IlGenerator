@@ -2,29 +2,27 @@
     orientation: 'horizontal',
     limit: 50,
     position: '50%',
-    onDrag: function (event) {
-        var parentHeight = $('#content').height();
-        var newHeight = $('#editorContainer').height();
-        var percent = newHeight / parentHeight * 100;
-        if (percent > 30) {
-            $('#editorContainer').css('min-height', percent - 10 + '%');
+    onDrag: function () {
+        var newHeight = codeSplitter.position();
+        var percent = newHeight / contentHeight * 100;
+        if (percent >= 25 && percent <= 75) {
+            hSplitterRatioPercent = percent;
         }
-        editor.refresh();
-        resultEditor.refresh();
+        editor.setSize();
+        resultEditor.setSize();
     }
 });
 
-var infoSplitter = $("#resultInfoContainer").split({
+var infoSplitter = $("#resultInfoContainer").split({ 
     orientation: 'vertical',
     limit: 75,
     position: '48.25%',
-    onDrag: function (event) {
-        var parentWidth = $('#resultInfoContainer').width();
-        var newWidth = $('#tree').width();
-        var percent = newWidth / parentWidth * 100;
-        if (percent > 30) {
-            $('#tree').css('min-width', percent - 10 + '%');
+    onDrag: function () {
+        var newWidth = infoSplitter.position();
+        var percent = newWidth / contentWidth * 100;
+        if (percent >= 25 && percent <= 75) {
+            vSplitterRatioPercent = percent;
         }
-        resultEditor.refresh();
+        resultEditor.setSize();
     }
 });

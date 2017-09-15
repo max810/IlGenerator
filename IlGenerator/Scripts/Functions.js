@@ -129,6 +129,4 @@ function toError(errorInfo, severity) {
             }
         }
     }
-
-
 }
