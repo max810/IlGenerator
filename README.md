@@ -1,6 +1,8 @@
 # IlGenerator
 #### Online C# assembly decomposition tool like IlDasm. ####
 
+Web-site available: [Ilgenerator online](http://ilgenerator.apphb.com/Home "IlGenerator main page")
+
 This repository provides main source code for IlGenerator.  
 It's a simple online decompiler that generates msil code +metadata for types in a given C# assembly.  
 It's very simple to use:  
@@ -24,5 +26,5 @@ It's very simple to use:
     
 ![Annotations](/images/annotations.png)  
 
-This project is still unfinished and, unfortunately, not available on the net yet.  
+This project is still unfinished but is already usable - all main functions work correctly.  
 Any help would be greatly appreciated.
