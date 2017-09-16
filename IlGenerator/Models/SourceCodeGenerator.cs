@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
 
 namespace IlGenerator.Models
 {
@@ -16,15 +17,17 @@ namespace IlGenerator.Models
     {
         public static CompilerResults CompileDefaultAssembly(string sourceCode, string assemblyName)
         {
+            string tempFolder = Path.GetTempPath();
             var csc = new CSharpCodeProvider();
             string[] dlls = Properties.Settings.Default.CompilerDllReferences.Split(' ');
 
-            string path = System.IO.Path.Combine(HttpContext.Current.Server.MapPath("~/App_Data/TempAssemblies"), assemblyName + ".dll"); 
+            string path = Path.Combine(tempFolder, assemblyName + ".dll"); 
 
             var parameters = new CompilerParameters(dlls, path, false)
             {
                 GenerateExecutable = false,
-                WarningLevel = 4
+                WarningLevel = 4,
+                TempFiles = new TempFileCollection(tempFolder, keepFiles: false)
             };
 
             CompilerResults compiled = csc.CompileAssemblyFromSource(parameters, sourceCode);

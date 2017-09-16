@@ -51,7 +51,7 @@ namespace IlGenerator.Controllers
 
             var tree = JsTreeFormatter.ToJSTree(resultCodeInfo);
 
-            string assemblyFullName = Path.Combine(Request.MapPath("~/App_Data/TempAssemblies"), assemblyName + ".dll");
+            string assemblyFullName = Path.Combine(Path.GetTempPath(), assemblyName + ".dll");
             if(System.IO.File.Exists(assemblyFullName))
                 System.IO.File.Delete(assemblyFullName);
 
