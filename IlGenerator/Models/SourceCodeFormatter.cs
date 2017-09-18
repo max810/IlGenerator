@@ -197,8 +197,6 @@ namespace IlGenerator.Models
                     .FirstOrDefault();
                 if(finallyHandler != null)
                 {
-                    //insert { BEFORE start
-                    //insert } BEFORE finish
                     InsertTry(lines, finallyHandler);
                     InsertHandler(lines, finallyHandler);
 
@@ -257,7 +255,8 @@ namespace IlGenerator.Models
             int offsetNumber = innerCode.First().Length - innerCode.First().TrimStart().Length;
             innerCode = innerCode.Select(x => "\t" + x).ToList();
             string offset = new string('\t', offsetNumber);
-            innerCode.Insert(0, $"{offset}{handlerName}{Environment.NewLine}{offset}{{");
+            innerCode.Insert(0, $"{offset}{handlerName}");
+            innerCode.Insert(1, offset + "{");
             innerCode.Add($"{offset}}} // end {handlerName.Split(' ').First()}");
             return innerCode;
         }

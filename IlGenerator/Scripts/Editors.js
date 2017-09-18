@@ -13,7 +13,10 @@
 
 editor.on('change', function (cm) {
     cm.save();
-    $("#inputForm").submit();
+    clearTimeout(textUpdateTimeout);
+    textUpdateTimeout = setTimeout(function () {
+        $("#inputForm").submit();
+    }, 500);
 });
 
 CodeMirror.registerHelper('lint', 'text/x-csharp', function (editor, text) { return ERRORS; });

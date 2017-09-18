@@ -22,19 +22,20 @@ function jsonEncode(jsonObject) {
 }
 
 function changeFont(mod) {
-    font += mod;
-    if (font <= 24) {
-        treeFont = font;
-    } else {
-        treeFont = 24;
+    if (font + mod >= 4 && font + mod <= 36) {
+        font += mod;
+        if (font <= 24) {
+            treeFont = font;
+        } else {
+            treeFont = 24;
+        }
+        $('.CodeMirror').css('font-size', font + 'px');
+        changeTreeFont(treeFont);
+        $('#fontSizeInput').val(font);
+        editor.refresh();
+        resultEditor.refresh();
     }
-    $('.CodeMirror').css('font-size', font + 'px');
-    changeTreeFont(treeFont);
-    $('#fontSizeInput').val(font);
-    editor.refresh();
-    resultEditor.refresh();
 }
-
 
 function changeTreeFont(newFontSize) {
     $('.jstree-node').css('font-size', newFontSize + 'px');

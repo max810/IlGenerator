@@ -1,11 +1,24 @@
 ﻿body {
     padding-top: 0;
     height: 100%;
-    padding-bottom: 42px;
 }
 
-html {
+html{
     height: 100%;
+}
+@media only screen and (min-width : 1000px) {
+    body {
+        padding-bottom: 42px;
+    }
+}
+
+@media only screen and (max-width: 999px) {
+    div.hsplitter{
+        min-height: 12px;
+    }
+    div.vsplitter {
+        min-width: 12px;
+    }
 }
 /* Set padding to keep content from hitting the edges */
 .body-content {
