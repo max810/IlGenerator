@@ -7,7 +7,8 @@
             lintOnChange: false,
         },
         theme: 'ambiance',
-        scrollbarStyle: "overlay"
+        scrollbarStyle: "overlay",
+        indentUnit: 4
     });
 
 editor.on('change', function (cm) {
