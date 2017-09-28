@@ -65,8 +65,7 @@
                 'multiple': false,
                 'data': jsonEncode(tree)
             },
-            'plugins': ['types']
-
+            'plugins': ['types', 'search']
         });
     tree.on('changed.jstree', function (e, data) {
         var curr = data.node;

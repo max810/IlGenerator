@@ -21,20 +21,35 @@
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
 </head>
 <body>
-    <div class="navbar-default" id="header">
-        <a href="" style="text-decoration: none"><span style="font-size: 24px; font-family: 'Century Gothic'; margin: 5px;">Il Generator</span></a>
-        <button class="btn btn-default text-center" style="height: 30px; margin-bottom: 4px;" onclick="$('#inputForm').submit();">
-            <span style="vertical-align: top">Disassemble</span>
-        </button>
-        <button class="btn topNavbarButton" id="fontLarger" onclick="changeFont(2)"></button>
-        <button class="btn topNavbarButton" id="fontSmaller" onclick="changeFont(-2)"></button>
-        <input type="number" min="4" max="36" value="12" id="fontSizeInput" />
+    <div class="navbar navbar-default" id="pageHeader">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="" class="navbar-brand" style="text-decoration: none"><span style="font-size: 24px; font-family: 'Century Gothic'; margin: 5px;">Il Generator</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li>
+                    <button class="btn btn-default text-center nav" style="height: 30px; margin-bottom: 4px;" onclick="$('#inputForm').submit();">
+                        <span style="vertical-align: top">Disassemble</span>
+                    </button>
+                </li>
+                <li>
+                    <button class="btn topNavbarButton" id="fontLarger" onclick="changeFont(2)"></button>
+                    <button class="btn topNavbarButton" id="fontSmaller" onclick="changeFont(-2)"></button>
+                    <input type="number" min="4" max="36" value="12" id="fontSizeInput" />
+                </li>
+            </ul>
+        </div>
     </div>
     @using (Ajax.BeginForm("ResultCode", null, new AjaxOptions() { OnSuccess = "updateResultInfo" },
-        new
-        {
-            id = "inputForm"
-        }))
+                new
+                {
+                    id = "inputForm"
+                }))
     {
 
     }
@@ -59,7 +74,10 @@ public class Program
 }</textarea>
         </div>
         <div id="resultInfoContainer">
-            <div id="tree" class="scrollbar-outer"></div>
+            <div id="treeContainer">
+                <input type="search" class="form-control" id="searchBar" placeholder="Search the tree..." />
+                <div id="tree" class="scrollbar-outer"></div>
+            </div>
             <div id="resultEditorContainer" class="editorContainer">
                 <div id="resultEditorNavbar" class="btn-group-vertical editorNavbar">
                     <button class="editorButton btn-dark tp-r tp-dark" title="Select all" id="resultEditorSelectAllButton" onclick="selectAll(resultEditor)"></button>
@@ -79,6 +97,7 @@ public class Program
         var contentHeight = $('#content').height();
         var contentWidth = $('#content').width();
         var textUpdateTimeout;
+        var searchBarUpdateTimeout;
     </script>
     <script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
     <script src="~/Scripts/CodeMirror/lib/codemirror.js"></script>

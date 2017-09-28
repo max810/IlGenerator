@@ -82,6 +82,25 @@ $(document).ready(function () {
         contentWidth = $('#content').width();
     });
 
+    $('#searchBar').keyup(function () {
+        clearTimeout(searchBarUpdateTimeout);
+        searchBarUpdateTimeout = setTimeout(function () {
+            $('#tree').jstree(true).search($('#searchBar').val());
+        }, 250);
+    });
+
+    $('#searchBar').keydown(function (e) {
+        if (e.key == 'Enter') {
+            clearTimeout(searchBarUpdateTimeout);
+            $('#tree').jstree(true).search($('#searchBar').val());
+        }
+    });
+
+    //$('div.vsplitter, div.hsplitter').mouseup(function () {
+    //    $(this).css('box-shadow', 'none');
+    //}).mousedown(function () {
+    //    $(this).css('box-shadow', '0 0 15px 10px lightblue');
+    //});
     //set 12px as a default
     changeFont(0);
 });

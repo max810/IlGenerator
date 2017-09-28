@@ -56,6 +56,7 @@ function updateResultInfo(dataObject) {
 
     editor.performLint();
 
+    $('#searchBar').prop('disabled', true);
     if (errors.length != 0) {
         $('#tree').html(errors.map(x => x.TextMessage).join('<br>'));
     }
@@ -65,6 +66,7 @@ function updateResultInfo(dataObject) {
     else {
         setCookie('sourceCode', encodeURIComponent(editor.getValue()), 7);
         createTree(dataObject.Tree);
+        $('#searchBar').prop('disabled', false);
     }
     resultEditor.setValue('');
 }

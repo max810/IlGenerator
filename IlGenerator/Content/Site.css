@@ -8,16 +8,19 @@ html{
 }
 @media only screen and (min-width : 1000px) {
     body {
-        padding-bottom: 42px;
+        padding-bottom: 28px;
+    }
+    html {
+        padding-bottom: 28px;
     }
 }
 
 @media only screen and (max-width: 999px) {
     div.hsplitter{
-        min-height: 12px;
+        min-height: 18px;
     }
     div.vsplitter {
-        min-width: 12px;
+        min-width: 18px;
     }
 }
 /* Set padding to keep content from hitting the edges */
@@ -37,17 +40,25 @@ html{
 input,
 select,
 textarea {
-    max-width: 280px;
+    max-width: 280px; 
 }
 
-#header {
-    min-height: 38px;
-    vertical-align: middle;
+#pageHeader {
+    min-height: 38px !important;
+    margin: 0;
 }
 
 #content {
     background-color: #202020;
     height: 100%;
+}
+
+#searchBar {
+    border-radius: 0 0 4px 4px;
+    margin: 0 auto;
+    height: 28px;
+    min-width: 100%;
+    max-width: 100%;
 }
 
 /* Set code editors' styles */
@@ -241,4 +252,20 @@ button.topNavbarButton {
 
 #resultEditorCopyAllButton {
     background-image: url(/Content/Icons/copy-all-dark.png);
+}
+
+::-webkit-input-placeholder {
+    font-style: italic;
+}
+
+:-moz-placeholder {
+    font-style: italic;
+}
+
+::-moz-placeholder {
+    font-style: italic;
+}
+
+:-ms-input-placeholder {
+    font-style: italic;
 }

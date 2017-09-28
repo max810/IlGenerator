@@ -2,6 +2,9 @@
 #### Online C# assembly decomposition tool like IlDasm. ####
 
 Web-site available: [Ilgenerator online](http://ilgenerator.apphb.com "IlGenerator main page")
+For local use - simply download the repository and build ```.sln``` file 
+
+_Note: project file is for **Visual Studio 2017**. If you want to open project in older version, please open ```.csproj``` file instead._
 
 This repository provides main source code for IlGenerator.  
 It's a simple online decompiler that generates msil code +metadata for types in a given C# assembly.  
