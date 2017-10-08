@@ -133,3 +133,32 @@ function toError(errorInfo, severity) {
         }
     }
 }
+
+function toggleEditor() {
+    if ($('#editorContainer').height()) {
+        $('#editorContainer').height(0);
+        $('#resultInfoContainer').height('100%');
+        $('#editorToggleIcon').css('transform', 'rotate(180deg)');
+        $('#editorToggleIcon').css('margin-top', '4px');
+    } else {
+        $('#editorContainer').height('50%');
+        $('#resultInfoContainer').height('50%');
+        $('#editorToggleIcon').css('transform', 'rotate(0)');
+        $('#editorToggleIcon').css('margin-top', '0');
+    }
+}
+
+function showTree() {
+    $('#resultEditorContainer').css('display', 'none');
+    $('#treeContainer').css('display', 'block');
+    $('#showTreeButton').css('background', 'linear-gradient(to bottom, #60605c, #3f3f3c)');
+    $('#showIlCodeButton').css('background', 'linear-gradient(to bottom, #45453e, #25251e)');
+}
+
+function showIlCode() {
+    $('#treeContainer').css('display', 'none');
+    $('#resultEditorContainer').css('display', 'block');
+    $('#showTreeButton').css('background', 'linear-gradient(to bottom, #45453e, #25251e)');
+    $('#showIlCodeButton').css('background', 'linear-gradient(to bottom, #60605c, #3f3f3c)');
+    resultEditor.refresh();
+}

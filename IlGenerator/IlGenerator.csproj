@@ -401,6 +401,7 @@
     <Content Include="Scripts\CodeMirror\theme\xq-light.css" />
     <Content Include="Scripts\CodeMirror\theme\yeti.css" />
     <Content Include="Scripts\CodeMirror\theme\zenburn.css" />
+    <Content Include="Scripts\detectmobilebrowser.js" />
     <Content Include="Scripts\Editors.js" />
     <Content Include="Scripts\PageConfig.js" />
     <Content Include="Scripts\Functions.js" />

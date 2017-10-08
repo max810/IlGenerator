@@ -3,26 +3,20 @@
     height: 100%;
 }
 
-html{
+html {
     height: 100%;
 }
+
 @media only screen and (min-width : 1000px) {
     body {
         padding-bottom: 28px;
     }
+
     html {
         padding-bottom: 28px;
     }
 }
 
-@media only screen and (max-width: 999px) {
-    div.hsplitter{
-        min-height: 18px;
-    }
-    div.vsplitter {
-        min-width: 18px;
-    }
-}
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -40,7 +34,11 @@ html{
 input,
 select,
 textarea {
-    max-width: 280px; 
+    max-width: 280px;
+}
+
+.tab-content {
+    width: 100%;
 }
 
 #pageHeader {
@@ -49,7 +47,6 @@ textarea {
 }
 
 #content {
-    background-color: #202020;
     height: 100%;
 }
 
@@ -59,6 +56,10 @@ textarea {
     height: 28px;
     min-width: 100%;
     max-width: 100%;
+}
+
+#editorToggler:hover {
+    cursor: pointer;
 }
 
 /* Set code editors' styles */
@@ -75,19 +76,22 @@ div.CodeMirror-scroll {
     overflow-x: scroll;
 }
 
-div.CodeMirror-gutter{
-    height:100%;
+div.CodeMirror-gutter {
+    height: 100%;
 }
 
-div.editorContainer {
-    position: relative;
+div.CodeMirror-scrollbar-filler {
+    background-color: #1f1f1f;
+}
+
+div.stretchable {
+    transition: height 0.5s;
 }
 
 #editorContainer {
-    min-height: 25%;
-    max-height: 75%;
-    height: 50%;
+    height: 40%;
     overflow: hidden;
+    background-color: #202020;
 }
 
 div.editorNavbar {
@@ -95,12 +99,12 @@ div.editorNavbar {
     background-color: #272822;
     float: left;
     height: 100%;
-    min-height: 200px;
-    overflow: visible;
+    /*min-height: 200px;*/
+    overflow: hidden;
 }
 
 #resultEditorContainer {
-    overflow: hidden;
+    height: 100%;
 }
 
 #resultEditorNavbar {
@@ -109,6 +113,7 @@ div.editorNavbar {
 
 #resultInfoContainer {
     background-color: white;
+    height: 50%;
 }
 
 #tree {
@@ -117,12 +122,32 @@ div.editorNavbar {
     min-width: 25%;
     max-width: 75%;
     width: 50%;
+    display: inline-block;
 }
 
 a {
     text-decoration: none;
     color: black;
 }
+
+.block-header {
+    color: #eee;
+    font-size: 20px;
+    font-weight: bold;
+    background: #4c4c3f;
+    background: linear-gradient(to bottom, #45453e, #25251e);
+    padding-left: 1%;
+}
+
+.toggler {
+    height: 30px;
+    width: 50%;
+    display: inline-block;
+}
+
+    .toggler:hover {
+        cursor: pointer;
+    }
 
 button.editorButton {
     display: block;
@@ -207,6 +232,10 @@ button.topNavbarButton {
     height: 30px;
     margin-left: 10px;
     margin-bottom: 5px;
+}
+
+#editorToggleIcon {
+    transition: transform 0.5s, margin-top 0.25s;
 }
 
 #editorSelectAllButton {

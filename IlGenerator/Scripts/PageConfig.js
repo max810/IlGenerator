@@ -76,10 +76,13 @@ $(document).ready(function () {
     }
 
     $(window).resize(function () {
-        codeSplitter.position(hSplitterRatioPercent + '%');
-        infoSplitter.position(vSplitterRatioPercent + '%');
-        contentHeight = $('#content').height();
-        contentWidth = $('#content').width();
+        if (typeof codeSplitter !== 'undefined' && typeof infoSplitter !== 'undefined') {
+            codeSplitter.position(hSplitterRatioPercent + '%');
+            infoSplitter.position(vSplitterRatioPercent + '%');
+            contentHeight = $('#content').height();
+            contentWidth = $('#content').width();
+        }
+        $('#resultEditorContainer')
     });
 
     $('#searchBar').keyup(function () {

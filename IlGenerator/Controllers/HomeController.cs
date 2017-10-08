@@ -17,8 +17,11 @@ namespace IlGenerator.Controllers
     {
         // GET: Home
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(bool? mobile)
         {
+            if (mobile == null)
+                mobile = false;
+            ViewBag.Mobile = mobile;
             return View();
         }
         [HttpPost]

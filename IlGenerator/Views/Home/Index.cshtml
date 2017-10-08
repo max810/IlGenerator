@@ -1,13 +1,24 @@
 ﻿@{
     Layout = null;
+    bool IsMobile = ViewBag.Mobile;
 }
-
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>Il Generator - an online C# assembly decomposition tool</title>
+    @Scripts.Render("~/Scripts/jquery-1.10.2.js")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    <script type="text/javascript" src="~/Scripts/detectmobilebrowser.js"></script>
+    <script>
+        if (jQuery.browser.mobile || true) {
+            if(window.location.href.indexOf('mobile') == -1)
+                window.location.replace(window.location.href + "?mobile=true");
+        } else if (window.location.href.indexOf('mobile') != -1) {
+            window.location.replace(window.location.href.split('?')[0]);
+        }
+    </script>
     <link rel="stylesheet" href="~/Scripts/jstree/dist/themes/default/style.css" />
     <link rel="stylesheet" href="~/Content/bootstrap.css" />
     <link rel="stylesheet" href="~/Content/jquery.splitter.css" />
@@ -17,8 +28,15 @@
     <link rel="stylesheet" href="~/Content/Site.css" />
     <link rel="stylesheet" href="~/Scripts/CodeMirror/addon/lint/lint.css" />
     <link rel="stylesheet" href="~/Scripts/CodeMirror/addon/scrollbar/simplescrollbars.css" />
-    @Scripts.Render("~/Scripts/jquery-1.10.2.js")
-    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    @if (!IsMobile)
+    {
+        <style>
+            #editorContainer {
+                min-height: 25%;
+                max-height: 75%;
+            }
+        </style>
+    }
 </head>
 <body>
     <div class="navbar navbar-default" id="pageHeader">
@@ -46,48 +64,99 @@
         </div>
     </div>
     @using (Ajax.BeginForm("ResultCode", null, new AjaxOptions() { OnSuccess = "updateResultInfo" },
-                new
-                {
-                    id = "inputForm"
-                }))
+        new
+        {
+            id = "inputForm"
+        }))
     {
 
     }
-    <div id="content">
-        <div id="editorContainer" class="editorContainer">
-            <div class="btn-group-vertical editorNavbar">
-                <button class="editorButton tp-r" data-toggle="tooltip" title="Select all" id="editorSelectAllButton" onclick="selectAll(editor)"></button>
-                <button class="editorButton tp-r" data-toggle="tooltip" title="Copy all" id="editorCopyAllButton" data-clipboard-target="#editor" onclick="selectAll(editor)"></button>
-                <button class="editorButton tp-r" data-toggle="tooltip" title="Clear all" id="editorClearAllButton" onclick="editor.setValue('');"></button>
-                <button class="editorButton tp-r" data-toggle="tooltip" title="Undo" id="editorUndoButton" onclick="editor.undo()"></button>
-                <button class="editorButton tp-r" data-toggle="tooltip" title="Redo" id="editorRedoButton" onclick="editor.redo()"></button>
-            </div>
-            <textarea id="editor" form="inputForm" name="sourceCode" style="display: none;">
+    @if (IsMobile == true)
+    {
+        <div id="editorToggler" class="block-header" onclick="toggleEditor()">CODE EDITOR <span id="editorToggleIcon" class="glyphicon glyphicon-chevron-up" style="vertical-align: top;"></span></div>
+        <div id="content">
+            <div id="editorContainer" class="stretchable">
+                <div class="btn-group-vertical editorNavbar">
+                    <button class="editorButton tp-r" data-toggle="tooltip" title="Select all" id="editorSelectAllButton" onclick="selectAll(editor)"></button>
+                    <button class="editorButton tp-r" data-toggle="tooltip" title="Copy all" id="editorCopyAllButton" data-clipboard-target="#editor" onclick="selectAll(editor)"></button>
+                    <button class="editorButton tp-r" data-toggle="tooltip" title="Clear all" id="editorClearAllButton" onclick="editor.setValue('');"></button>
+                    <button class="editorButton tp-r" data-toggle="tooltip" title="Undo" id="editorUndoButton" onclick="editor.undo()"></button>
+                    <button class="editorButton tp-r" data-toggle="tooltip" title="Redo" id="editorRedoButton" onclick="editor.redo()"></button>
+                </div>
+<textarea id="editor" form="inputForm" name="sourceCode" style="display: none;">
 using System;
 
 public class Program
 {
 	public static void Main()
 	{
-		Console.WriteLine("Hello World");
+		Console.WriteLine("Phone message!");
 	}
-}</textarea>
-        </div>
-        <div id="resultInfoContainer">
-            <div id="treeContainer">
-                <input type="search" class="form-control" id="searchBar" placeholder="Search the tree..." />
-                <div id="tree" class="scrollbar-outer"></div>
+}
+</textarea>
             </div>
-            <div id="resultEditorContainer" class="editorContainer">
-                <div id="resultEditorNavbar" class="btn-group-vertical editorNavbar">
-                    <button class="editorButton btn-dark tp-r tp-dark" title="Select all" id="resultEditorSelectAllButton" onclick="selectAll(resultEditor)"></button>
-                    <button class="editorButton btn-dark tp-r tp-dark" title="Copy all" id="resultEditorCopyAllButton" data-clipboard-target="#resultEditor" onclick="selectAll(resultEditor)"></button>
-                    <button class="editorButton btn-dark tp-r tp-dark" title="Clear all" id="resultEditorClearAllButton" onclick="resultEditor.setValue('');"></button>
+            <div style="width: 100%;">
+                <div id="showTreeButton" class="toggler block-header" onclick="showTree();" style="background: linear-gradient(to bottom, #60605c, #3f3f3c)">
+                    TREE
+                </div><div id="showIlCodeButton" class="toggler block-header" onclick="showIlCode();">
+                    IL CODE
                 </div>
-                <textarea id="resultEditor" style="display: none;"></textarea>
+            </div>
+            <div id="resultInfoContainer" class="stretchable">
+                <div id="treeContainer" style="width: 100%;">
+                    <input type="search" class="form-control" id="searchBar" placeholder="Search the tree..." />
+                    <div id="tree" class="scrollbar-outer"></div>
+                </div>
+                <div id="resultEditorContainer" class="editorContainer" style="display: none">
+                    <div id="resultEditorNavbar" class="btn-group-vertical editorNavbar">
+                        <button class="editorButton btn-dark tp-r tp-dark" title="Select all" id="resultEditorSelectAllButton" onclick="selectAll(resultEditor)"></button>
+                        <button class="editorButton btn-dark tp-r tp-dark" title="Copy all" id="resultEditorCopyAllButton" data-clipboard-target="#resultEditor" onclick="selectAll(resultEditor)"></button>
+                        <button class="editorButton btn-dark tp-r tp-dark" title="Clear all" id="resultEditorClearAllButton" onclick="resultEditor.setValue('');"></button>
+                    </div>
+                    <textarea id="resultEditor" style="display: none;"></textarea>
+                </div>
             </div>
         </div>
-    </div>
+    }
+    else
+    {
+        <div id="content">
+            <div id="editorContainer" class="editorContainer">
+                <div class="btn-group-vertical editorNavbar">
+                    <button class="editorButton tp-r" data-toggle="tooltip" title="Select all" id="editorSelectAllButton" onclick="selectAll(editor)"></button>
+                    <button class="editorButton tp-r" data-toggle="tooltip" title="Copy all" id="editorCopyAllButton" data-clipboard-target="#editor" onclick="selectAll(editor)"></button>
+                    <button class="editorButton tp-r" data-toggle="tooltip" title="Clear all" id="editorClearAllButton" onclick="editor.setValue('');"></button>
+                    <button class="editorButton tp-r" data-toggle="tooltip" title="Undo" id="editorUndoButton" onclick="editor.undo()"></button>
+                    <button class="editorButton tp-r" data-toggle="tooltip" title="Redo" id="editorRedoButton" onclick="editor.redo()"></button>
+                </div>
+<textarea id="editor" form="inputForm" name="sourceCode" style="display: none;">
+using System;
+
+public class Program
+{
+	public static void Main()
+	{
+		Console.WriteLine("Hello World!");
+	}
+}
+</textarea>
+            </div>
+            <div id="resultInfoContainer">
+                <div id="treeContainer">
+                    <input type="search" class="form-control" id="searchBar" placeholder="Search the tree..." />
+                    <div id="tree" class="scrollbar-outer"></div>
+                </div>
+                <div id="resultEditorContainer" class="editorContainer">
+                    <div id="resultEditorNavbar" class="btn-group-vertical editorNavbar">
+                        <button class="editorButton btn-dark tp-r tp-dark" title="Select all" id="resultEditorSelectAllButton" onclick="selectAll(resultEditor)"></button>
+                        <button class="editorButton btn-dark tp-r tp-dark" title="Copy all" id="resultEditorCopyAllButton" data-clipboard-target="#resultEditor" onclick="selectAll(resultEditor)"></button>
+                        <button class="editorButton btn-dark tp-r tp-dark" title="Clear all" id="resultEditorClearAllButton" onclick="resultEditor.setValue('');"></button>
+                    </div>
+                    <textarea id="resultEditor" style="display: none;"></textarea>
+                </div>
+            </div>
+        </div>
+    }
     <script>
         var ERRORS = [];
         var font = 12;
@@ -110,7 +179,10 @@ public class Program
     <script type="text/javascript" src="~/Scripts/clipboard/clipboard.js"></script>
     <script src="~/Scripts/Functions.js"></script>
     <script src="~/Scripts/PageConfig.js"></script>
-    <script src="~/Scripts/Splitters.js" type="text/javascript" charset="utf-8"></script>
+    @if (!IsMobile)
+    {
+        <script src="~/Scripts/Splitters.js" type="text/javascript" charset="utf-8"></script>
+    }
     <script src="~/Scripts/Editors.js" type="text/javascript" charset="utf-8"></script>
     <script src="~/Scripts/Tree.js" type="text/javascript" charset="utf-8"></script>
 </body>
