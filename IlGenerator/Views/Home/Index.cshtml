@@ -7,12 +7,13 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <meta name="google-site-verification" content="Pdyrz3krtWIhlnY1DYLIXLMO6ZsHX55DDjmd31GbRn4" />
     <title>Il Generator - an online C# assembly decomposition tool</title>
     @Scripts.Render("~/Scripts/jquery-1.10.2.js")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
     <script type="text/javascript" src="~/Scripts/detectmobilebrowser.js"></script>
     <script>
-        if (jQuery.browser.mobile || true) {
+        if (jQuery.browser.mobile) {
             if(window.location.href.indexOf('mobile') == -1)
                 window.location.replace(window.location.href + "?mobile=true");
         } else if (window.location.href.indexOf('mobile') != -1) {
@@ -187,3 +188,4 @@ public class Program
     <script src="~/Scripts/Tree.js" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>
+@* ЗВЕЗДОЧКА КАК В ТЕКСОВЫХ ФАЙЛАХ ПРИ СОХРАНЕНИИ *@
